@@ -1,0 +1,17 @@
+version: '3.9'
+services:
+ db:
+      image: postgres
+      container_name: db
+      environment:
+        POSTGRES_USER: toolexchange
+        POSTGRES_PASSWORD: toolexchange
+        POSTGRES_DB: tooldb
+        PGDATA: /var/lib/postgresql/data/dbdata
+      ports:
+        - 5000:5432
+      volumes:
+        - dbdata:/var/lib/postgresql/data
+      restart: always
+volumes:
+  dbdata:
