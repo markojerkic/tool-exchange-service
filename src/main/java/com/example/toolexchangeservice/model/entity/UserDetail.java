@@ -21,7 +21,7 @@ public class UserDetail {
     @Column
     @NotNull
     private String lastName;
-    @Column
+    @Column(unique = true)
     @NotNull
     private String email;
     @Column

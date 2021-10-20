@@ -34,7 +34,7 @@ public class UserManagementController {
     }
 
     @GetMapping("user")
-    public UserDetail getUserById(@RequestParam UserDetail user) {
+    public UserDetail getUserById(@RequestParam("id") UserDetail user) {
         return user;
     }
 }
