@@ -36,9 +36,15 @@ public class UserManagementService implements UserDetailsService {
         return this.userRepository.findAll();
     }
 
+    /**
+     * Searches the database for user with the given username.
+     * @param username Unique username by which the database is queried
+     * @return UserDetails class with data of the user with the given username
+     * @throws UsernameNotFoundException Throws if database does not contain user with the username
+     */
     @Override
-    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return this.userRepository.findByEmail(s).orElseThrow(() ->
-                new UsernameNotFoundException("Korisnik s emailom " + s + " nije pronađen"));
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return this.userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s korisničkim imenom " + username + " nije pronađen"));
     }
 }
