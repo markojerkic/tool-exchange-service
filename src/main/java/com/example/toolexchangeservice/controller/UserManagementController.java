@@ -4,6 +4,7 @@ import com.example.toolexchangeservice.config.auth.JwtUtils;
 import com.example.toolexchangeservice.model.auth.dto.JwtResponse;
 import com.example.toolexchangeservice.model.auth.dto.LoginRequest;
 import com.example.toolexchangeservice.model.entity.UserDetail;
+import com.example.toolexchangeservice.service.AuthService;
 import com.example.toolexchangeservice.service.UserManagementService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -12,18 +13,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import java.util.Arrays;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController()
-@RequestMapping("api/auth")
+@RequestMapping("api/user")
 @AllArgsConstructor
 public class UserManagementController {
 
     private final UserManagementService userManagementService;
-    private final AuthenticationManager authManager;
-    private final JwtUtils jwtUtils;
+    private final AuthService authService;
 
     /**
      * Api operation for saving a new user or updating existing one
@@ -49,16 +51,4 @@ public class UserManagementController {
         return user;
     }
 
-    @PutMapping()
-    public JwtResponse logIn(@RequestBody LoginRequest loginRequest) {
-        Authentication auth = this.authManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(auth);
-        String jwt = this.jwtUtils.generateToken(auth);
-
-        UserDetails user = (UserDetails) auth.getPrincipal();
-        List<String> roles = Arrays.asList("ROLE_USER");
-        return new JwtResponse(jwt, jwt, roles);
-    }
 }

@@ -1,5 +1,7 @@
 package com.example.toolexchangeservice.service;
 
+import com.example.toolexchangeservice.config.exception.EmailAlreadyExistsException;
+import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -24,6 +26,12 @@ public class UserManagementService implements UserDetailsService {
      * @return Saved user
      */
     public UserDetail saveUser(UserDetail user) {
+        if (this.userRepository.existsByEmail(user.getEmail())) {
+            throw new EmailAlreadyExistsException("Email adresa se već koristi");
+        }
+        if (this.userRepository.existsByUsername(user.getUsername())) {
+            throw new UsernameAlreadyExistsException("Korisničko ime se već koristi");
+        }
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }

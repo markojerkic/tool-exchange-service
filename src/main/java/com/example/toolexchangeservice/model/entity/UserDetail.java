@@ -36,7 +36,7 @@ public class UserDetail implements UserDetails {
     private String username;
     @Column
     @NotNull
-    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     @Column
     @NotNull

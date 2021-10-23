@@ -31,14 +31,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.cors().and().csrf().disable()
             .exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .addFilterBefore(this.authTokenFilter, UsernamePasswordAuthenticationFilter.class)
             .authorizeRequests()
             .antMatchers(HttpMethod.PUT, "/api/auth").permitAll()
-            .antMatchers(HttpMethod.POST, "/api/auth").permitAll()
+            //.antMatchers(HttpMethod.POST, "/api/user").permitAll()
             .antMatchers(HttpMethod.GET, "/api/**").permitAll()
             .anyRequest().authenticated();
     }
