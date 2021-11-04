@@ -23,7 +23,8 @@ public class AdDetail {
     @Column
     @NotNull
     private Date lastModified;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
     @NotNull
     private UserDetail creator;
 }
