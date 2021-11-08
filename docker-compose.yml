@@ -1,20 +1,30 @@
 version: '3.9'
 services:
-  front:
-    image: mjerkic/tool-exchange-front
+  tool-exchange-front:
+    image: markojerkic/tool-exchange-front
+    container_name: tool-exchange-front
     ports:
       - 80:80
-  service:
-    image: mjerkic/tool-exchange-service
+      - 443:80
+    networks:
+      - tool-exchange-network
+  tool-exchange-service:
+    image: markojerkic/tool-exchange-service
+    container_name: tool-exchange-service
+    build:
+      context: .
+    depends_on:
+      - tool-db
     environment:
-      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5000/tooldb
+      - DB_HOST=tool-db
+      - DB_PORT=5432
     ports:
       - 8080:8080
-    links:
-      - db
-  db:
+    networks:
+      - tool-exchange-network
+  tool-db:
       image: postgres
-      container_name: db
+      container_name: tool-db
       environment:
         POSTGRES_USER: toolexchange
         POSTGRES_PASSWORD: toolexchange
@@ -22,8 +32,14 @@ services:
         PGDATA: /var/lib/postgresql/data/dbdata
       ports:
         - 5000:5432
+        - 5432:5432
+      networks:
+        - tool-exchange-network
       volumes:
         - dbdata:/var/lib/postgresql/data
       restart: always
 volumes:
   dbdata:
+networks:
+  tool-exchange-network:
+    name: tool-exchange-network
