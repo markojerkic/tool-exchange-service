@@ -1,6 +1,18 @@
 version: '3.9'
 services:
- db:
+  front:
+    image: mjerkic/tool-exchange-front
+    ports:
+      - 80:80
+  service:
+    image: mjerkic/tool-exchange-service
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5000/tooldb
+    ports:
+      - 8080:8080
+    links:
+      - db
+  db:
       image: postgres
       container_name: db
       environment:

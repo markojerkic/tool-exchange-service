@@ -3,6 +3,7 @@ package com.example.toolexchangeservice.service;
 import com.example.toolexchangeservice.config.auth.JwtUtils;
 import com.example.toolexchangeservice.model.auth.dto.JwtResponse;
 import com.example.toolexchangeservice.model.auth.dto.LoginRequest;
+import com.example.toolexchangeservice.model.entity.UserDetail;
 import javassist.tools.web.BadHttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,4 +57,7 @@ public class AuthService {
                 this.jwtUtils.generateRefreshToken(auth), username, roles);
     }
 
+    public UserDetail getLoggedInUser() {
+        return (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    }
 }

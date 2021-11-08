@@ -1,6 +1,7 @@
 package com.example.toolexchangeservice.config.auth;
 
 import com.example.toolexchangeservice.service.UserManagementService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Slf4j
 @Component
 public class AuthTokenFilter extends OncePerRequestFilter {
-
-    private String AUTHORIZATION_HEADER = "Authorization";
 
     private final JwtUtils jwtUtils;
     private final UserManagementService userManagementService;
