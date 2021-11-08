@@ -41,14 +41,20 @@ public class UserManagementController {
      * Api operation that returns a list of all existing users saved in the database
      * @return List of all existing users in database
      */
-    @GetMapping
+    @GetMapping("all")
     public List<UserDetail> getAllUsers() {
         return this.userManagementService.getAllUsers();
     }
 
-    @GetMapping("user")
+    @GetMapping("byId")
     public UserDetail getUserById(@RequestParam("id") UserDetail user) {
         return user;
+    }
+
+    @GetMapping("byUsername")
+    public UserDetail getUserByUsername(@RequestParam("username") String username) {
+        //potrebno dodati error handleing u slucaju da ne postoji user
+        return this.userManagementService.loadUserByUsername(username);
     }
 
 }

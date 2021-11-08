@@ -51,7 +51,7 @@ public class UserManagementService implements UserDetailsService {
      * @throws UsernameNotFoundException Throws if database does not contain user with the username
      */
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("Korisnik s korisničkim imenom " + username + " nije pronađen"));
     }
