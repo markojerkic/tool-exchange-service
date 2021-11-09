@@ -11,13 +11,14 @@ services:
   tool-exchange-service:
     image: markojerkic/tool-exchange-service
     container_name: tool-exchange-service
-    #build:
-    #  context: .
+    build:
+      context: .
     depends_on:
       - tool-db
     environment:
       - DB_HOST=tool-db
       - DB_PORT=5432
+      - CORS_ORIGINS=http://34.89.240.97:443
     ports:
       - 8080:8080
     networks:
