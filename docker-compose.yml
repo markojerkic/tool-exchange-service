@@ -42,4 +42,4 @@ volumes:
   dbdata:
 networks:
   tool-exchange-network:
-    name: tool-exchange-network
+    
