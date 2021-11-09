@@ -7,7 +7,6 @@ import com.example.toolexchangeservice.service.AuthService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController()
 @RequestMapping("api/auth")
 @AllArgsConstructor
