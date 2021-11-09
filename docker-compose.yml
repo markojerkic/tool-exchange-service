@@ -4,7 +4,7 @@ services:
     image: markojerkic/tool-exchange-front
     container_name: tool-exchange-front
     ports:
-      #- 80:80
+      - 80:80
       - 443:80
     networks:
       - tool-exchange-network
