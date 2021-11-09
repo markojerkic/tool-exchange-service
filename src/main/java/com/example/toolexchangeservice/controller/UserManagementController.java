@@ -1,26 +1,17 @@
 package com.example.toolexchangeservice.controller;
 
-import com.example.toolexchangeservice.config.auth.JwtUtils;
-import com.example.toolexchangeservice.model.auth.dto.JwtResponse;
-import com.example.toolexchangeservice.model.auth.dto.LoginRequest;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.service.AuthService;
 import com.example.toolexchangeservice.service.UserManagementService;
 import lombok.AllArgsConstructor;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
-import java.util.Arrays;
 import java.util.List;
 
 @RestController()
 @RequestMapping("api/user")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class UserManagementController {
 
     private final UserManagementService userManagementService;
