@@ -30,13 +30,8 @@ public class AdDetail {
     @NotNull
     private UserDetail creator;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-    @JoinTable(
-            name = "advert_tools",
-            joinColumns = @JoinColumn(name = "advert_id"),
-            inverseJoinColumns = @JoinColumn(name = "tool_id")
-    )
-    private List<Tool> tools;
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+    private Tool tool;
     @Column
     @NotNull
     private String phoneNumber;
