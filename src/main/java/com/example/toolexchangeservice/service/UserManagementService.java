@@ -1,6 +1,8 @@
 package com.example.toolexchangeservice.service;
 
 import com.example.toolexchangeservice.config.exception.EmailAlreadyExistsException;
+import com.example.toolexchangeservice.config.exception.EmailNotFoundException;
+import com.example.toolexchangeservice.config.exception.IdNotFoundException;
 import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.repository.UserRepository;
@@ -54,5 +56,15 @@ public class UserManagementService implements UserDetailsService {
     public UserDetail loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("Korisnik s korisničkim imenom " + username + " nije pronađen"));
+    }
+
+    public UserDetail loadUserById(Long id) throws IdNotFoundException {
+        return this.userRepository.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s korisničkim id " + id + " nije pronađen"));
+    }
+
+    public UserDetail loadUserByEmail(String email) throws EmailNotFoundException {
+        return this.userRepository.findByEmail(email).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s email adresom " + email + " nije pronađen"));
     }
 }
