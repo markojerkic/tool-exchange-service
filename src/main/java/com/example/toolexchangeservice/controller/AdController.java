@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequestMapping("api/ad")
 @AllArgsConstructor
+@CrossOrigin("*")
 public class AdController {
     private AdService adService;
 
@@ -22,5 +22,10 @@ public class AdController {
     @GetMapping
     public List<AdDetail> getAllAds(){
         return this.adService.getAllAds();
+    }
+
+    @GetMapping("{id}")
+    public AdDetail getAdById(@PathVariable Long id) {
+        return this.adService.getAdById(id);
     }
 }
