@@ -12,29 +12,21 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-public class Tool {
+public class Request {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     @NotNull
-    private String name;
+    private String title;
     @Column
-    private String manufacturerLink;
+    @NotNull
+    private String details;
     @Column
     @NotNull
     private Date lastModified;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
     @NotNull
-    private boolean isElectric;
-    @Column
-    private boolean hasBattery;
-    @Column
-    private Long power;
-    @Column
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ToolState toolState;
-
-
+    private UserDetail creator;
 }
