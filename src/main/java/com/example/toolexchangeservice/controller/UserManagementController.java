@@ -37,7 +37,7 @@ public class UserManagementController {
         return this.userManagementService.getAllUsers();
     }
 
-    @GetMapping("")
+    @GetMapping()
     public UserDetail getUser(@RequestParam(required = false) String username,
                               @RequestParam(required = false) Long id,
                               @RequestParam(required = false) String email ) {
