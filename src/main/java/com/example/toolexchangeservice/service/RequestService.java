@@ -7,13 +7,17 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Date;
 
 @Service
 @AllArgsConstructor
 public class RequestService {
     private final RequestRepository requestRepository;
+    private final AuthService authService;
 
     public Request saveRequest(Request requestDetail){
+        requestDetail.setCreator(this.authService.getLoggedInUser());
+        requestDetail.setLastModified(new Date());
         return this.requestRepository.save(requestDetail);
     }
 
