@@ -25,7 +25,7 @@ public class Request {
     @Column
     @NotNull
     private Date lastModified;
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "creator_id")
     @NotNull
     private UserDetail creator;

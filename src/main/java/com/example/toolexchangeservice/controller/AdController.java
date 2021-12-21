@@ -3,6 +3,7 @@ package com.example.toolexchangeservice.controller;
 import com.example.toolexchangeservice.model.entity.AdDetail;
 import com.example.toolexchangeservice.service.AdService;
 import lombok.AllArgsConstructor;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,6 +16,7 @@ public class AdController {
     private AdService adService;
 
     @PostMapping
+    @Validated
     public AdDetail createNewAd(@RequestBody AdDetail ad){
         return this.adService.saveAd(ad);
     }
