@@ -7,6 +7,8 @@ import com.example.toolexchangeservice.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.http.*;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,11 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.print.attribute.standard.Media;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,17 +75,41 @@ public class ImageService {
         return savedImage;
     }
 
+    private MediaType getContentType(ImageFileExtension fileExtension) {
+        MediaType mediaType;
+        switch (fileExtension) {
+            case JPEG:
+            case JPG:
+                return MediaType.IMAGE_JPEG;
+            case PNG:
+                return MediaType.IMAGE_PNG;
+            default:
+                throw new IllegalArgumentException();
+        }
+    }
+
     @Async
     void postImageFile(Image image) {
+        /*
         MultiValueMap<String, Object> body
                 = new LinkedMultiValueMap<>();
-        try {
-            body.set("image", new ByteArrayResource(image.getFile().getBytes()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        body.set("image", new ClassPathResource(image.getFile()));*/
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.MULTIPART_FORM_DATA);
+
+        MultiValueMap<String, Object> body
+                = new LinkedMultiValueMap<>();
+/*
+        String tempFileName = "/tmp/" + image.getFile().getOriginalFilename();
+        try(OutputStream fo = new FileOutputStream(tempFileName)) {
+            fo.write(image.getFile().getBytes());
+            fo.close();
+            body.add("image", image.getFile().getResource());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+        body.add("image", image.getFile().getResource());
+
         HttpEntity<MultiValueMap<String, Object>> requestEntity
                 = new HttpEntity<>(body, headers);
         try {
