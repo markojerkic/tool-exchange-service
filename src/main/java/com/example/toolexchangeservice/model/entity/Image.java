@@ -1,6 +1,7 @@
 package com.example.toolexchangeservice.model.entity;
 
 import com.example.toolexchangeservice.model.ImageFileExtension;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
@@ -46,6 +47,10 @@ public class Image {
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MultipartFile file;
+
+    @Transient
+    @JsonIgnore
+    private byte[] bytes;
 
     @Override
     public boolean equals(Object o) {

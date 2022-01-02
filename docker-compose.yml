@@ -20,7 +20,7 @@ services:
       - DB_PORT=5432
       - CORS_ORIGINS=http://34.89.240.97:443
     ports:
-      - 8080:8080
+      - "8080:8080"
     networks:
       - tool-exchange-network
   tool-db:
@@ -32,8 +32,8 @@ services:
         POSTGRES_DB: tooldb
         PGDATA: /var/lib/postgresql/data/dbdata
       ports:
-        - 5000:5432
-        - 5432:5432
+        - "5000:5432"
+        - "5432:5432"
       networks:
         - tool-exchange-network
       volumes:
@@ -41,6 +41,7 @@ services:
       restart: always
 volumes:
   dbdata:
+  image_service_volume:
 networks:
   tool-exchange-network:
     

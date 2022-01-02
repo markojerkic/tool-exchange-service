@@ -2,6 +2,7 @@ package com.example.toolexchangeservice.config.exception.handling;
 
 import com.example.toolexchangeservice.config.exception.EmailAlreadyExistsException;
 import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
+import com.example.toolexchangeservice.config.exception.ImageStorageException;
 import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -23,6 +24,11 @@ public class MvcExceptionHandler {
         log.info("Image not found", e);
     }
 
+    @ExceptionHandler(ImageStorageException.class)
+    @ResponseStatus(value= HttpStatus.NOT_ACCEPTABLE, reason="Spremanje slike nije uspjelo")
+    public void imageStorageFailed(HttpServletRequest req, Exception e) {
+        log.info("Image storage failed", e);
+    }
 
     @ExceptionHandler(BadCredentialsException.class)
     @ResponseStatus(value=HttpStatus.BAD_REQUEST, reason="Korisničko ime ili lozinka nisu točni")
