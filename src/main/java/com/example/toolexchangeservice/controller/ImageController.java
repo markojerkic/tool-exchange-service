@@ -33,7 +33,7 @@ public class ImageController {
     @GetMapping("{uuid}")
     public ResponseEntity<?> getImageByUuid(@PathVariable UUID uuid) {
         Image image = this.imageService.getImageByUuid(uuid);
-        return ResponseEntity.status(HttpStatus.FOUND)
+        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
                 .header(HttpHeaders.LOCATION, this.imageServerLocation + "/" +
                         image.getUuid() + "/" + image.getImageFileExtension()).build();
     }
