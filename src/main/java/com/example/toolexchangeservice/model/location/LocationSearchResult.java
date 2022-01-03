@@ -1,16 +1,12 @@
 
 package com.example.toolexchangeservice.model.location;
 
+import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
@@ -18,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
     "results",
     "status"
 })
-@Generated("jsonschema2pojo")
+@Data
 public class LocationSearchResult {
 
     @JsonProperty("html_attributions")
