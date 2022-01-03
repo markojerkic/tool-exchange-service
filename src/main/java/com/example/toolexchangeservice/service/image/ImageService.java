@@ -31,6 +31,10 @@ public class ImageService {
                 .collect(Collectors.toList());
     }
 
+    public Image saveImage(Image image) {
+        return this.imageRepository.save(image);
+    }
+
     private Image saveImageFile(MultipartFile imageFile) {
         Image image = new Image();
         String extension = Objects.requireNonNull(imageFile.getOriginalFilename())
@@ -98,5 +102,9 @@ public class ImageService {
     public Image getImageFile(UUID uuid) {
         Image image = this.getImageByUuid(uuid);
         return this.imageFileService.getImageFile(image);
+    }
+
+    public List<Image> getImagesByAdvertId(Long adId) {
+        return this.imageRepository.findAllByAdvert_Id(adId);
     }
 }

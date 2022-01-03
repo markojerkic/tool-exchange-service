@@ -39,6 +39,11 @@ public class ImageController {
         return new ResponseEntity<>(image.getBytes(), headers, HttpStatus.OK);
     }
 
+    @GetMapping("by-advert/{adId}")
+    public List<Image> getAdvertImages(@PathVariable Long adId) {
+        return this.imageService.getImagesByAdvertId(adId);
+    }
+
     @DeleteMapping("{uuid}")
     public void deleteImage(@PathVariable UUID uuid) {
         this.imageService.deleteImageByUUID(uuid);
