@@ -2,10 +2,10 @@ package com.example.toolexchangeservice.controller;
 
 
 import com.example.toolexchangeservice.model.entity.Image;
-import com.example.toolexchangeservice.service.ImageService;
-import org.springframework.beans.factory.annotation.Value;
+import com.example.toolexchangeservice.service.image.ImageService;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -18,8 +18,6 @@ import java.util.UUID;
 @CrossOrigin("*")
 public class ImageController {
     private final ImageService imageService;
-    @Value("${image.server.location}")
-    private String imageServerLocation;
 
     public ImageController(ImageService imageService) {
         this.imageService = imageService;
@@ -31,11 +29,23 @@ public class ImageController {
     }
 
     @GetMapping("{uuid}")
-    public ResponseEntity<?> getImageByUuid(@PathVariable UUID uuid) {
-        Image image = this.imageService.getImageByUuid(uuid);
-        return ResponseEntity.status(HttpStatus.MOVED_PERMANENTLY)
-                .header(HttpHeaders.LOCATION, this.imageServerLocation + "/" +
-                        image.getUuid() + "/" + image.getImageFileExtension()).build();
+    public ResponseEntity<byte[]> getFile(@PathVariable UUID uuid) {
+        Image image = this.imageService.getImageFile(uuid);
+
+        HttpHeaders headers = new HttpHeaders();
+        switch (image.getImageFileExtension()) {
+            case JPEG:
+            case JPG:
+                headers.setContentType(MediaType.IMAGE_JPEG);
+                break;
+            case PNG:
+                headers.setContentType(MediaType.IMAGE_PNG);
+                break;
+            default:
+                throw new IllegalArgumentException();
+        }
+
+        return new ResponseEntity<>(image.getBytes(), headers, HttpStatus.OK);
     }
 
     @DeleteMapping("{uuid}")

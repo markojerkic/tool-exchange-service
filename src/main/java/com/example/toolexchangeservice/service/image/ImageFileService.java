@@ -1,4 +1,4 @@
-package com.example.toolexchangeservice.service;
+package com.example.toolexchangeservice.service.image;
 
 import com.example.toolexchangeservice.model.ImageFileExtension;
 import com.example.toolexchangeservice.model.entity.Image;

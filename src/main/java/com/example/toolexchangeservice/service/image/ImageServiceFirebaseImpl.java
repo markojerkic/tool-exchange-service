@@ -4,7 +4,6 @@ import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
 import com.example.toolexchangeservice.config.exception.ImageStorageException;
 import com.example.toolexchangeservice.model.ImageFileExtension;
 import com.example.toolexchangeservice.model.entity.Image;
-import com.example.toolexchangeservice.service.ImageFileService;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import lombok.extern.slf4j.Slf4j;

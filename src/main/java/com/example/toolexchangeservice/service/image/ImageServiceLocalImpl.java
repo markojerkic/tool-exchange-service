@@ -4,9 +4,9 @@ import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
 import com.example.toolexchangeservice.config.exception.ImageStorageException;
 import com.example.toolexchangeservice.model.ImageFileExtension;
 import com.example.toolexchangeservice.model.entity.Image;
-import com.example.toolexchangeservice.service.ImageFileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,6 +33,7 @@ public class ImageServiceLocalImpl implements ImageFileService {
         }
     }
 
+    @Async
     public void saveImageFile(MultipartFile image, UUID uuid, ImageFileExtension fileExtension) {
         Image savedImage = new Image();
         try {
