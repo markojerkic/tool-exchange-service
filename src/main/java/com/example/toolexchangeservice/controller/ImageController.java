@@ -33,17 +33,8 @@ public class ImageController {
         Image image = this.imageService.getImageFile(uuid);
 
         HttpHeaders headers = new HttpHeaders();
-        switch (image.getImageFileExtension()) {
-            case JPEG:
-            case JPG:
-                headers.setContentType(MediaType.IMAGE_JPEG);
-                break;
-            case PNG:
-                headers.setContentType(MediaType.IMAGE_PNG);
-                break;
-            default:
-                throw new IllegalArgumentException();
-        }
+        MediaType mediaType = this.imageService.getContentType(image.getImageFileExtension());
+        headers.setContentType(mediaType);
 
         return new ResponseEntity<>(image.getBytes(), headers, HttpStatus.OK);
     }

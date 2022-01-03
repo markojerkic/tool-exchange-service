@@ -2,13 +2,11 @@ package com.example.toolexchangeservice.service.image;
 
 import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
 import com.example.toolexchangeservice.config.exception.ImageStorageException;
-import com.example.toolexchangeservice.model.ImageFileExtension;
 import com.example.toolexchangeservice.model.entity.Image;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Profile;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,33 +32,29 @@ public class ImageServiceLocalImpl implements ImageFileService {
     }
 
     @Async
-    public void saveImageFile(MultipartFile image, UUID uuid, ImageFileExtension fileExtension) {
-        Image savedImage = new Image();
+    public void saveImageFile(Image image) {
         try {
-            savedImage.setUuid(uuid);
-            savedImage.setImageFileExtension(fileExtension);
 
             this.createBaseDirIfNotExists();
 
-            Files.copy(image.getInputStream(), this.root.resolve(ImageUtil.getImageFileName(savedImage.getUuid(),
-                    savedImage.getImageFileExtension())));
+            Files.copy(image.getFile().getInputStream(), this.root.resolve(ImageUtil.getImageFileName(image.getUuid(),
+                    image.getImageFileExtension())));
 
-            log.info("{} saved at {}", savedImage, this.root.resolve(ImageUtil.getImageFileName(savedImage.getUuid(),
-                    savedImage.getImageFileExtension())));
+            log.info("{} saved at {}", image, this.root.resolve(ImageUtil.getImageFileName(image.getUuid(),
+                    image.getImageFileExtension())));
         } catch (IOException e) {
             log.error("Greška prilikom spremanja slike", e);
             throw new ImageStorageException("Greška prilikom spremanja slike");
         }
     }
 
-    public Image getImageFile(UUID uuid, ImageFileExtension fileExtension) {
+    public Image getImageFile(Image image) {
         try {
-            Image image = new Image();
-            image.setBytes(Files.readAllBytes(this.root.resolve(ImageUtil.getImageFileName(uuid, fileExtension))));
+            image.setBytes(Files.readAllBytes(this.root.resolve(ImageUtil.getImageFileName(image))));
             return image;
         } catch (IOException e) {
-            log.error("Image {} not found", this.root.resolve(ImageUtil.getImageFileName(uuid, fileExtension)));
-            throw this.imageNotFound(uuid);
+            log.error("Image {} not found", this.root.resolve(ImageUtil.getImageFileName(image)));
+            throw this.imageNotFound(image);
         }
     }
 
@@ -85,9 +79,9 @@ public class ImageServiceLocalImpl implements ImageFileService {
         return new ImageNotFoundException("Slika " + imageUuid + " nije pronađena");
     }
 
-    public void deleteImageFile(UUID uuid, ImageFileExtension imageFileExtension) {
+    public void deleteImageFile(Image image) {
         try {
-            Files.delete(this.root.resolve(ImageUtil.getImageFileName(uuid, imageFileExtension)));
+            Files.delete(this.root.resolve(ImageUtil.getImageFileName(image)));
         } catch (IOException e) {
             e.printStackTrace();
         }

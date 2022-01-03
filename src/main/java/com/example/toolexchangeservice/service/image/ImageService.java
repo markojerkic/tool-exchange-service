@@ -59,7 +59,7 @@ public class ImageService {
         return savedImage;
     }
 
-    private MediaType getContentType(ImageFileExtension fileExtension) {
+    public MediaType getContentType(ImageFileExtension fileExtension) {
         MediaType mediaType;
         switch (fileExtension) {
             case JPEG:
@@ -73,7 +73,7 @@ public class ImageService {
     }
 
     private void postImageFile(Image image) {
-        this.imageFileService.saveImageFile(image.getFile(), image.getUuid(), image.getImageFileExtension());
+        this.imageFileService.saveImageFile(image);
     }
 
     public Image getImageByUuid(UUID imageUuid) {
@@ -92,11 +92,11 @@ public class ImageService {
         Image image = this.imageRepository.findById(uuid).orElseThrow(() -> this.imageNotFound(uuid));
 
         this.imageRepository.deleteById(uuid);
-        this.imageFileService.deleteImageFile(uuid, image.getImageFileExtension());
+        this.imageFileService.deleteImageFile(image);
     }
 
     public Image getImageFile(UUID uuid) {
         Image image = this.getImageByUuid(uuid);
-        return this.imageFileService.getImageFile(image.getUuid(), image.getImageFileExtension());
+        return this.imageFileService.getImageFile(image);
     }
 }
