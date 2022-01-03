@@ -1,5 +1,6 @@
 package com.example.toolexchangeservice.model.entity;
 
+import com.example.toolexchangeservice.model.auth.Role;
 import com.example.toolexchangeservice.model.location.Result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -14,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @AllArgsConstructor
@@ -21,7 +24,7 @@ import java.util.Collection;
 @Entity
 public class UserDetail implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     @NotNull
@@ -55,16 +58,23 @@ public class UserDetail implements UserDetails {
     @Column
     @NotNull
     private String formattedAddress;
-//    @Column
-//    @NotNull
-//    private UserRole role;
+
+    // Uloga
+    @JsonIgnore
+    @NotNull
+    @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(name = "user_id")
+    )
+    private Set<Role> roles;
 
     @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.asList(
-                new SimpleGrantedAuthority("ROLE_USER")
-        );
+        return this.roles.stream().map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .collect(Collectors.toList());
     }
 
     @JsonIgnore
