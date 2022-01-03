@@ -1,5 +1,6 @@
 package com.example.toolexchangeservice.model.entity;
 
+import com.example.toolexchangeservice.model.location.Result;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
@@ -38,9 +39,22 @@ public class UserDetail implements UserDetails {
     @NotNull
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
+    // Lokacija
+    @Transient
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotNull
+    private Result locationSearchResult;
+
     @Column
     @NotNull
-    private String address;
+    private Double lat;
+    @Column
+    @NotNull
+    private Double lng;
+    @Column
+    @NotNull
+    private String formattedAddress;
 //    @Column
 //    @NotNull
 //    private UserRole role;

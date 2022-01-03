@@ -17,8 +17,8 @@ import java.util.List;
 @Data
 public class LocationSearchResult {
     @JsonProperty("results")
-    public List<Result> results = new ArrayList<>();
+    private List<Result> results = new ArrayList<>();
     @JsonProperty("status")
-    public String status;
+    private String status;
 
 }

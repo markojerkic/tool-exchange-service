@@ -5,9 +5,9 @@ import com.example.toolexchangeservice.config.exception.EmailNotFoundException;
 import com.example.toolexchangeservice.config.exception.IdNotFoundException;
 import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
 import com.example.toolexchangeservice.model.entity.UserDetail;
+import com.example.toolexchangeservice.model.location.Result;
 import com.example.toolexchangeservice.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +34,11 @@ public class UserManagementService implements UserDetailsService {
         if (this.userRepository.existsByUsername(user.getUsername())) {
             throw new UsernameAlreadyExistsException("Korisničko ime se već koristi");
         }
+
+        Result location = user.getLocationSearchResult();
+        user.setFormattedAddress(location.getFormattedAddress());
+        user.setLat(location.getGeometry().getLocation().getLat());
+
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
     }

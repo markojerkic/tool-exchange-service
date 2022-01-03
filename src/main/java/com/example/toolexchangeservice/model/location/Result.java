@@ -15,8 +15,8 @@ import lombok.Data;
 public class Result {
 
     @JsonProperty("formatted_address")
-    public String formattedAddress;
+    private String formattedAddress;
     @JsonProperty("geometry")
-    public Geometry geometry;
+    private Geometry geometry;
 
 }

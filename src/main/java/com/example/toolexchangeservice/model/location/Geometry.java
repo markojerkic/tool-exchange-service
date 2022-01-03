@@ -13,5 +13,5 @@ import lombok.Data;
 @Data
 public class Geometry {
     @JsonProperty("location")
-    public Location location;
+    private Location location;
 }
