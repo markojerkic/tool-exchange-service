@@ -4,9 +4,11 @@ import com.example.toolexchangeservice.config.exception.EmailAlreadyExistsExcept
 import com.example.toolexchangeservice.config.exception.EmailNotFoundException;
 import com.example.toolexchangeservice.config.exception.IdNotFoundException;
 import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
+import com.example.toolexchangeservice.model.auth.Role;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.model.location.Result;
 import com.example.toolexchangeservice.repository.UserRepository;
+import com.google.common.collect.ImmutableSet;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -38,6 +40,9 @@ public class UserManagementService implements UserDetailsService {
         Result location = user.getLocationSearchResult();
         user.setFormattedAddress(location.getFormattedAddress());
         user.setLat(location.getGeometry().getLocation().getLat());
+        user.setLng(location.getGeometry().getLocation().getLng());
+
+        user.setRoles(ImmutableSet.of(Role.USER));
 
         user.setPassword(this.passwordEncoder.encode(user.getPassword()));
         return this.userRepository.save(user);
