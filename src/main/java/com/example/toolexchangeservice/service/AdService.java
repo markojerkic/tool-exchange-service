@@ -23,7 +23,7 @@ public class AdService {
         adDetail.setLastModified(new Date());
 
         AdDetail savedAdvert = this.adRepository.save(adDetail);
-        savedAdvert.getImages().stream().map(image -> this.addAdvertInfoToImage(image, savedAdvert))
+        adDetail.getImages().stream().map(image -> this.addAdvertInfoToImage(image, savedAdvert))
                 .forEach(this.imageService::saveImage);
 
         return savedAdvert;
