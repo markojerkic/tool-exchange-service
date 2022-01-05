@@ -1,29 +1,33 @@
 package com.example.toolexchangeservice.controller;
 
+import com.example.toolexchangeservice.model.dto.AdvertPreviewDTO;
 import com.example.toolexchangeservice.model.entity.AdDetail;
 import com.example.toolexchangeservice.service.AdService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("api/ad")
+@RequestMapping("api/advert")
 @AllArgsConstructor
 @CrossOrigin("*")
 public class AdController {
     private AdService adService;
 
     @PostMapping
-    @Validated
-    public AdDetail createNewAd(@RequestBody AdDetail ad){
+    public AdDetail createNewAd(@RequestBody @Validated AdDetail ad){
         return this.adService.saveAd(ad);
     }
 
     @GetMapping
-    public List<AdDetail> getAllAds(){
-        return this.adService.getAllAds();
+    public Page<AdvertPreviewDTO> getAllAds(@SortDefault(value = "lastModified",
+            direction = Sort.Direction.DESC) Pageable pageable){
+        return this.adService.getPagedAdverts(pageable);
     }
 
     @GetMapping("{id}")

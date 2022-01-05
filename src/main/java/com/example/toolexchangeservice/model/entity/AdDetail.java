@@ -21,7 +21,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AdDetail {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column
     @NotNull
@@ -37,7 +37,7 @@ public class AdDetail {
     @NotNull
     private UserDetail creator;
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL)
     private Tool tool;
     @Column
     @NotNull
