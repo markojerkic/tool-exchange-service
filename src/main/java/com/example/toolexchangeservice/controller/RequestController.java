@@ -1,11 +1,14 @@
 package com.example.toolexchangeservice.controller;
 
+import com.example.toolexchangeservice.model.dto.RequestPreviewDTO;
 import com.example.toolexchangeservice.model.entity.Request;
 import com.example.toolexchangeservice.service.RequestService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.SortDefault;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("api/request")
@@ -20,8 +23,9 @@ public class RequestController {
     }
 
     @GetMapping
-    public List<Request> getAllRequests(){
-        return this.requestService.getAllRequests();
+    public Page<RequestPreviewDTO> getAllRequests(@SortDefault(value = "lastModified",
+            direction = Sort.Direction.DESC) Pageable pageable){
+        return this.requestService.getPagedRequestPreviews(pageable);
     }
 
     @GetMapping("{id}")
