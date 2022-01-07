@@ -1,0 +1,6 @@
+<html>
+    <head></head>
+    <body>
+        <p>Vaša ponuda za oglas: <b>'${advertTitle}'</b> je prihvaćena.</p>
+    </body>
+</html>

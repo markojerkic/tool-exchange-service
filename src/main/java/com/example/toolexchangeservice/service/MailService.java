@@ -37,8 +37,8 @@ public class MailService {
     }
 
     @Async
-    public void sendMail(String to, String advertTitle, String fromUsername, Date suggestedTimeframe,
-                         String messageText) {
+    public void sendOfferMail(String to, String advertTitle, String fromUsername, Date suggestedTimeframe,
+                              String messageText) {
         try {
             MimeMessage mimeMessage = this.mailSender.createMimeMessage();
             MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
@@ -57,6 +57,42 @@ public class MailService {
 
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.freemarkerConfigurer.getConfiguration().getTemplate("mail-template.flt"), templateMap);
+            messageHelper.setText(content, true);
+
+            log.info("Sending mail to {}", to);
+
+            this.mailSender.send(messageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e) {
+            log.error("Exception whilst sending mail", e);
+        }
+    }
+
+    @Async
+    public void sendAcceptanceMail(String to, String advertTitle) {
+        send(to, advertTitle, "Vaša ponuda je prihvaćena", "accepted.flt");
+    }
+
+    @Async
+    public void sendRejectionMail(String to, String advertTitle) {
+        send(to, advertTitle, "Vaša ponuda je odbijena", "rejection.flt");
+    }
+
+    private void send(String to, String advertTitle, String s, String s2) {
+        try {
+            MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+
+
+            messageHelper.setFrom(this.fromEmail);
+            messageHelper.setTo(to);
+            messageHelper.setSubject(s);
+
+            Map<String, Object> templateMap = new HashMap<>();
+            templateMap.put("advertTitle", advertTitle);
+
+
+            String content = FreeMarkerTemplateUtils.processTemplateIntoString(
+                    this.freemarkerConfigurer.getConfiguration().getTemplate(s2), templateMap);
             messageHelper.setText(content, true);
 
             log.info("Sending mail to {}", to);

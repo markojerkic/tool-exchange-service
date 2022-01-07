@@ -6,7 +6,6 @@
         <p>Poruka uz ponudu:</p>
         <p>...</p>
         <p>${message}</p>
-        <p>Thanks</p>
-
+        <p>...</p>
     </body>
 </html>

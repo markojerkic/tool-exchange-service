@@ -2,6 +2,7 @@ package com.example.toolexchangeservice.controller;
 
 import com.example.toolexchangeservice.model.constants.ExchangeOfferStatus;
 import com.example.toolexchangeservice.model.dto.ExchangeOfferPreviewDto;
+import com.example.toolexchangeservice.model.dto.OfferAcceptance;
 import com.example.toolexchangeservice.model.entity.ExchangeOffer;
 import com.example.toolexchangeservice.service.ExchangeOfferService;
 import lombok.AllArgsConstructor;
@@ -24,6 +25,12 @@ public class ExchangeOfferController {
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ExchangeOffer addNewOffer(@RequestBody ExchangeOffer offer) {
         return this.exchangeOfferService.addNewOffer(offer);
+    }
+
+    @PostMapping("acceptance")
+    @ResponseStatus(HttpStatus.ACCEPTED)
+    public ExchangeOffer acceptOrDeclineOffer(@RequestBody OfferAcceptance acceptance) {
+        return this.exchangeOfferService.acceptOrDeclineOffer(acceptance);
     }
 
     @GetMapping

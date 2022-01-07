@@ -1,9 +1,6 @@
 package com.example.toolexchangeservice.config.exception.handling;
 
-import com.example.toolexchangeservice.config.exception.EmailAlreadyExistsException;
-import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
-import com.example.toolexchangeservice.config.exception.ImageStorageException;
-import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
+import com.example.toolexchangeservice.config.exception.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +19,12 @@ public class MvcExceptionHandler {
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Slika nije pronađena")
     public void imageNotFound(HttpServletRequest req, Exception e) {
         log.info("Image not found", e);
+    }
+
+    @ExceptionHandler(OfferNotFound.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Ponuda nije pronađena")
+    public void offerNotFound(HttpServletRequest req, Exception e) {
+        log.info("Offer not found", e);
     }
 
     @ExceptionHandler(ImageStorageException.class)

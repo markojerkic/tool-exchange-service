@@ -1,0 +1,6 @@
+<html>
+    <head></head>
+    <body>
+        <p>Vaša ponuda za oglas: <b>'${advertTitle}'</b> je odbijena.</p>
+    </body>
+</html>

@@ -22,7 +22,7 @@ public class MailServiceTest {
 
     @Test
     public void testMailSending() throws MessagingException, TemplateException, IOException {
-        this.mailService.sendMail("markojerkic266@gmail.com", "Naslov", "marko",
+        this.mailService.sendOfferMail("markojerkic266@gmail.com", "Naslov", "marko",
                 new Date(), "poruka");
         Assertions.assertThatNoException();
     }

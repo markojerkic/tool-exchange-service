@@ -1,7 +1,9 @@
 package com.example.toolexchangeservice.service;
 
+import com.example.toolexchangeservice.config.exception.OfferNotFound;
 import com.example.toolexchangeservice.model.constants.ExchangeOfferStatus;
 import com.example.toolexchangeservice.model.dto.ExchangeOfferPreviewDto;
+import com.example.toolexchangeservice.model.dto.OfferAcceptance;
 import com.example.toolexchangeservice.model.entity.AdDetail;
 import com.example.toolexchangeservice.model.entity.ExchangeOffer;
 import com.example.toolexchangeservice.model.entity.UserDetail;
@@ -35,7 +37,7 @@ public class ExchangeOfferService {
         offer.setOfferFrom(fromUser);
         offer.setOfferStatus(ExchangeOfferStatus.PENDING);
 
-        this.mailService.sendMail(adDetail.getCreator().getEmail(), adDetail.getTitle(), fromUser.getEmail(),
+        this.mailService.sendOfferMail(adDetail.getCreator().getEmail(), adDetail.getTitle(), fromUser.getEmail(),
                 offer.getSuggestedTimeframe(), offer.getMessage());
 
         return this.exchangeOfferRepository.save(offer);
@@ -82,5 +84,28 @@ public class ExchangeOfferService {
         preview.setSuggestedTimeframe(offer.getSuggestedTimeframe());
 
         return preview;
+    }
+
+    public ExchangeOffer acceptOrDeclineOffer(OfferAcceptance acceptance) {
+        ExchangeOffer offer = this.exchangeOfferRepository.findById(acceptance.getId()).orElseThrow(() ->
+                new OfferNotFound("Offer " + acceptance.getId() + " not found"));
+
+        AdDetail adDetail = this.adService.getAdById(offer.getAdvert().getId());
+        UserDetail fromUser = this.authService.getLoggedInUser();
+
+        switch (acceptance.getType()) {
+            case ACCEPT:
+                offer.setOfferStatus(ExchangeOfferStatus.ACCEPTED);
+                this.mailService.sendAcceptanceMail(fromUser.getEmail(), adDetail.getTitle());
+                break;
+            case REJECT:
+                offer.setOfferStatus(ExchangeOfferStatus.REJECTED);
+                this.mailService.sendRejectionMail(fromUser.getEmail(), adDetail.getTitle());
+                break;
+            default:
+                throw new RuntimeException(acceptance.getType().name());
+        }
+
+        return this.exchangeOfferRepository.save(offer);
     }
 }
