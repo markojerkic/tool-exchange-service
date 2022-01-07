@@ -107,4 +107,8 @@ public class ImageService {
     public List<Image> getImagesByAdvertId(Long adId) {
         return this.imageRepository.findAllByAdvert_Id(adId);
     }
+
+    public List<Image> getImagesByThreadId(Long adId) {
+        return this.imageRepository.findAllByAdviceThread_Id(adId);
+    }
 }

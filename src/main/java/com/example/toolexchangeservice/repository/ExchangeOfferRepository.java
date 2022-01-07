@@ -1,8 +1,6 @@
 package com.example.toolexchangeservice.repository;
 
 import com.example.toolexchangeservice.model.entity.ExchangeOffer;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;

@@ -10,6 +10,6 @@ import java.util.UUID;
 @Repository
 public interface ImageRepository extends JpaRepository<Image, UUID> {
     List<Image> findAllByAdvert_Id(Long id);
-    void deleteAllByAdvert_Id(Long id);
+    List<Image> findAllByAdviceThread_Id(Long id);
 
 }

@@ -43,6 +43,13 @@ public class Image {
     @ToString.Exclude
     private AdDetail advert;
 
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "thread_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @ToString.Exclude
+    private AdviceThread adviceThread;
+
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private MultipartFile file;

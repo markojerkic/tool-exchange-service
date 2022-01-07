@@ -4,7 +4,6 @@ import com.example.toolexchangeservice.config.auth.JwtUtils;
 import com.example.toolexchangeservice.model.auth.dto.JwtResponse;
 import com.example.toolexchangeservice.model.auth.dto.LoginRequest;
 import com.example.toolexchangeservice.model.entity.UserDetail;
-import javassist.tools.web.BadHttpRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;

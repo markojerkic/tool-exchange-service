@@ -2,7 +2,6 @@ package com.example.toolexchangeservice.config.auth;
 
 import com.example.toolexchangeservice.service.UserManagementService;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
