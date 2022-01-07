@@ -37,6 +37,9 @@ public class ExchangeOffer {
     @Enumerated(EnumType.STRING)
     private ExchangeOfferStatus offerStatus;
 
+    @Transient
+    private String fromUsername;
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

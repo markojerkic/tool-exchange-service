@@ -87,8 +87,7 @@ public class ExchangeOfferService {
     }
 
     public ExchangeOffer acceptOrDeclineOffer(OfferAcceptance acceptance) {
-        ExchangeOffer offer = this.exchangeOfferRepository.findById(acceptance.getId()).orElseThrow(() ->
-                new OfferNotFound("Offer " + acceptance.getId() + " not found"));
+        ExchangeOffer offer = this.getById(acceptance.getId());
 
         AdDetail adDetail = this.adService.getAdById(offer.getAdvert().getId());
         UserDetail fromUser = this.authService.getLoggedInUser();
@@ -107,5 +106,17 @@ public class ExchangeOfferService {
         }
 
         return this.exchangeOfferRepository.save(offer);
+    }
+
+    public ExchangeOffer getById(Long id) {
+        ExchangeOffer offer = this.exchangeOfferRepository.findById(id).orElseThrow(() ->
+                new OfferNotFound("Offer " + id + " not found"));
+
+        offer.setFromUsername(offer.getOfferFrom().getUsername());
+        return offer;
+    }
+
+    public Integer countPendingOffers() {
+        return this.exchangeOfferRepository.countPendingOffers(this.authService.getLoggedInUser().getId());
     }
 }

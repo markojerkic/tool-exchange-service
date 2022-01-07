@@ -41,11 +41,11 @@ public class MvcExceptionHandler {
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(HttpServletRequest request, Exception e) {
         log.info("Email already exists", e);
-        return ResponseEntity.badRequest().body(new ErrorResponse("Email adresa se već koristi", "email"));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Email adresa se već koristi", "email"));
     }
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUsernameAlreadyExistsException(HttpServletRequest request, Exception e) {
         log.info("Username already exists", e);
-        return ResponseEntity.badRequest().body(new ErrorResponse("Email adresa se već koristi", "username"));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Email adresa se već koristi", "username"));
     }
 }

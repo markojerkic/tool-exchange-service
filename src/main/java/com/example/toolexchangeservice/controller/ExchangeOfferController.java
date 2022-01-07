@@ -27,10 +27,20 @@ public class ExchangeOfferController {
         return this.exchangeOfferService.addNewOffer(offer);
     }
 
+    @GetMapping("count")
+    public Integer countPendingOffers() {
+        return this.exchangeOfferService.countPendingOffers();
+    }
+
     @PostMapping("acceptance")
     @ResponseStatus(HttpStatus.ACCEPTED)
     public ExchangeOffer acceptOrDeclineOffer(@RequestBody OfferAcceptance acceptance) {
         return this.exchangeOfferService.acceptOrDeclineOffer(acceptance);
+    }
+
+    @GetMapping("{id}")
+    public ExchangeOffer getById(@PathVariable Long id) {
+        return this.exchangeOfferService.getById(id);
     }
 
     @GetMapping
