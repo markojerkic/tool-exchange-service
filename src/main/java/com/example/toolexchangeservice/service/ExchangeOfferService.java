@@ -43,8 +43,6 @@ public class ExchangeOfferService {
 
     public Page<ExchangeOfferPreviewDto> getOffers(Pageable pageable, Optional<String> advertTitle, Optional<String> from,
                                                    Optional<Long> suggestedTimeframe, Optional<ExchangeOfferStatus> status) {
-//        return this.exchangeOfferRepository.findAllByAdvert_Creator_Id(pageable,
-//                this.authService.getLoggedInUser().getId()).map(this::mapToPreview);
         return this.exchangeOfferRepository.findAll(this.createQuerySpecification(advertTitle, from,
                 suggestedTimeframe, status, this.authService.getLoggedInUser().getId()),
                 pageable).map(this::mapToPreview);
@@ -62,7 +60,7 @@ public class ExchangeOfferService {
             from.ifPresent(username -> predicates.add(criteriaBuilder.like(criteriaBuilder
                                     .upper(root.get("offerFrom").get("username")),
                             "%" + username.toUpperCase() + "%")));
-            suggestedTimeframe.ifPresent(date -> predicates.add(criteriaBuilder.equal(root.get("suggestedTimeframe"),
+            suggestedTimeframe.ifPresent(date -> predicates.add(criteriaBuilder.lessThanOrEqualTo(root.get("suggestedTimeframe"),
                     new Date(date))));
             status.ifPresent(offerStatus -> predicates.add(criteriaBuilder.equal(root.get("offerStatus"),
                     offerStatus)));
