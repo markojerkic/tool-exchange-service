@@ -13,6 +13,8 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +25,8 @@ public class MailService {
 
     private final JavaMailSender mailSender;
     private final FreeMarkerConfigurer freemarkerConfigurer;
+
+    private static DateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
     @Value("${spring.mail.username}")
     private String fromEmail;
@@ -47,13 +51,15 @@ public class MailService {
             Map<String, Object> templateMap = new HashMap<>();
             templateMap.put("advertTitle", advertTitle);
             templateMap.put("fromUsername", fromUsername);
-            templateMap.put("suggestedTimeframe", suggestedTimeframe.toString());
+            templateMap.put("suggestedTimeframe", dateFormat.format(suggestedTimeframe));
             templateMap.put("message", messageText);
 
 
             String content = FreeMarkerTemplateUtils.processTemplateIntoString(
                     this.freemarkerConfigurer.getConfiguration().getTemplate("mail-template.flt"), templateMap);
             messageHelper.setText(content, true);
+
+            log.info("Sending mail to {}", to);
 
             this.mailSender.send(messageHelper.getMimeMessage());
         } catch (MessagingException | IOException | TemplateException e) {

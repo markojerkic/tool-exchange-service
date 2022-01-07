@@ -1,5 +1,6 @@
 package com.example.toolexchangeservice.service;
 
+import com.example.toolexchangeservice.model.constants.ExchangeOfferStatus;
 import com.example.toolexchangeservice.model.entity.AdDetail;
 import com.example.toolexchangeservice.model.entity.ExchangeOffer;
 import com.example.toolexchangeservice.model.entity.UserDetail;
@@ -18,10 +19,11 @@ public class ExchangeOfferService {
     private final AuthService authService;
 
     public ExchangeOffer addNewOffer(ExchangeOffer offer) {
-        AdDetail adDetail = this.adService.getAdById(offer.getId());
+        AdDetail adDetail = this.adService.getAdById(offer.getAdvert().getId());
         UserDetail fromUser = this.authService.getLoggedInUser();
 
         offer.setOfferFrom(fromUser);
+        offer.setOfferStatus(ExchangeOfferStatus.PENDING);
 
         this.mailService.sendMail(adDetail.getCreator().getEmail(), adDetail.getTitle(), fromUser.getEmail(),
                 offer.getSuggestedTimeframe(), offer.getMessage());
