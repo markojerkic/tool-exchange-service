@@ -1,5 +1,6 @@
 package com.example.toolexchangeservice.controller;
 
+import com.example.toolexchangeservice.model.constants.ExchangeOfferStatus;
 import com.example.toolexchangeservice.model.dto.ExchangeOfferPreviewDto;
 import com.example.toolexchangeservice.model.entity.ExchangeOffer;
 import com.example.toolexchangeservice.service.ExchangeOfferService;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.SortDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/offer")
@@ -24,7 +27,11 @@ public class ExchangeOfferController {
     }
 
     @GetMapping
-    public Page<ExchangeOfferPreviewDto> getOffers(@SortDefault(value = "id") Pageable pageable) {
-        return this.exchangeOfferService.getOffers(pageable);
+    public Page<ExchangeOfferPreviewDto> getOffers(@SortDefault(value = "id") Pageable pageable,
+                                                   @RequestParam Optional<String> advertTitle,
+                                                   @RequestParam Optional<String> from,
+                                                   @RequestParam Optional<Long> suggestedTimeframe,
+                                                   @RequestParam Optional<ExchangeOfferStatus> status) {
+        return this.exchangeOfferService.getOffers(pageable, advertTitle, from, suggestedTimeframe, status);
     }
 }

@@ -10,7 +10,14 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -34,9 +41,38 @@ public class ExchangeOfferService {
         return this.exchangeOfferRepository.save(offer);
     }
 
-    public Page<ExchangeOfferPreviewDto> getOffers(Pageable pageable) {
-        return this.exchangeOfferRepository.findAllByAdvert_Creator_Id(pageable,
-                this.authService.getLoggedInUser().getId()).map(this::mapToPreview);
+    public Page<ExchangeOfferPreviewDto> getOffers(Pageable pageable, Optional<String> advertTitle, Optional<String> from,
+                                                   Optional<Long> suggestedTimeframe, Optional<ExchangeOfferStatus> status) {
+//        return this.exchangeOfferRepository.findAllByAdvert_Creator_Id(pageable,
+//                this.authService.getLoggedInUser().getId()).map(this::mapToPreview);
+        return this.exchangeOfferRepository.findAll(this.createQuerySpecification(advertTitle, from,
+                suggestedTimeframe, status, this.authService.getLoggedInUser().getId()),
+                pageable).map(this::mapToPreview);
+    }
+
+    private Specification<ExchangeOffer> createQuerySpecification(Optional<String> advertTitle, Optional<String> from,
+                                                                  Optional<Long> suggestedTimeframe,
+                                                                  Optional<ExchangeOfferStatus> status, Long userId) {
+        return (root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+
+            advertTitle.ifPresent(title -> predicates.add(criteriaBuilder.like(criteriaBuilder
+                                    .upper(root.get("advert").get("title")),
+                            "%" + title.toUpperCase() + "%")));
+            from.ifPresent(username -> predicates.add(criteriaBuilder.like(criteriaBuilder
+                                    .upper(root.get("offerFrom").get("username")),
+                            "%" + username.toUpperCase() + "%")));
+            suggestedTimeframe.ifPresent(date -> predicates.add(criteriaBuilder.equal(root.get("suggestedTimeframe"),
+                    new Date(date))));
+            status.ifPresent(offerStatus -> predicates.add(criteriaBuilder.equal(root.get("offerStatus"),
+                    offerStatus)));
+
+            predicates.add(criteriaBuilder.equal(root.get("advert").get("creator")
+                            .get("id"),
+                    userId));
+
+            return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
+        };
     }
 
     private ExchangeOfferPreviewDto mapToPreview(ExchangeOffer offer) {
