@@ -1,0 +1,12 @@
+<html>
+    <head></head>
+    <body>
+        <p>Dobili ste ponudu za vaš oglas: '${advertTitle}'.</p>
+        <p>Korisnik <b>${fromUsername}</b> vam nudi vrijeme povratka: ${suggestedTimeframe}.</p>
+        <p>Poruka uz ponudu:</p>
+        <p>...</p>
+        <p>${message}</p>
+        <p>Thanks</p>
+
+    </body>
+</html>
