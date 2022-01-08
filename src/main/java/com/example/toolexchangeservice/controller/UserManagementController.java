@@ -1,13 +1,16 @@
 package com.example.toolexchangeservice.controller;
 
+import com.example.toolexchangeservice.model.dto.UserPreviewDTO;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.service.AuthService;
 import com.example.toolexchangeservice.service.UserManagementService;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.Optional;
 
 @RestController()
 @RequestMapping("api/user")
@@ -29,12 +32,12 @@ public class UserManagementController {
     }
 
     /**
-     * Api operation that returns a list of all existing users saved in the database
+     * Api operation that returns a page of existing users saved in the database
      * @return List of all existing users in database
      */
-    @GetMapping("all")
-    public List<UserDetail> getUsers() {
-        return this.userManagementService.getAllUsers();
+    @GetMapping
+    public Page<UserPreviewDTO> getUsers(Pageable pageable, @RequestParam Optional<String> username) {
+        return this.userManagementService.getUserPage(pageable, username);
     }
 
     @GetMapping()
