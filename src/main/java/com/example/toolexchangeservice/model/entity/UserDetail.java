@@ -46,6 +46,10 @@ public class UserDetail implements UserDetails {
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
+    @Column
+    @NotNull
+    private Boolean isDisabled = false;
+
     // Lokacija
     @Transient
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -101,7 +105,7 @@ public class UserDetail implements UserDetails {
     @JsonIgnore
     @Override
     public boolean isEnabled() {
-        return true;
+        return !isDisabled;
     }
 
     @Override
