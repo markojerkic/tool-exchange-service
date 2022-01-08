@@ -54,4 +54,9 @@ public class UserManagementController {
             throw new UsernameNotFoundException("Korisnik nije pronađen");
     }
 
+    @PutMapping("/block/id={id}")
+    public void blockUser(@PathVariable Long id){
+        this.userManagementService.blockUserById(id);
+    }
+
 }

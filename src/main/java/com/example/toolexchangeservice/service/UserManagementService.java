@@ -104,4 +104,11 @@ public class UserManagementService implements UserDetailsService {
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
+
+    public void blockUserById(Long id) throws IdNotFoundException {
+        UserDetail data = this.userRepository.findById(id).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s korisničkim id " + id + " nije pronađen"));
+        data.setIsDisabled(!data.getIsDisabled());
+        this.userRepository.save(data);
+    }
 }
