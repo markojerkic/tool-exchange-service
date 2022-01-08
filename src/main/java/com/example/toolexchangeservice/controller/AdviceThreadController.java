@@ -19,18 +19,18 @@ public class AdviceThreadController {
     private AdviceThreadService threadService;
 
     @PostMapping
-    public AdviceThread createNewAd(@RequestBody @Validated AdviceThread thread){
+    public AdviceThread createNewThread(@RequestBody @Validated AdviceThread thread){
         return this.threadService.addNewThread(thread);
     }
 
     @GetMapping
-    public Page<AdviceThreadDTO> getAllAds(@SortDefault(value = "lastModified",
+    public Page<AdviceThreadDTO> getAllThreads(@SortDefault(value = "lastModified",
             direction = Sort.Direction.DESC) Pageable pageable){
         return this.threadService.getPagedThreads(pageable);
     }
 
     @GetMapping("{id}")
-    public AdviceThread getAdById(@PathVariable Long id) {
+    public AdviceThread getThreadById(@PathVariable Long id) {
         return this.threadService.getThreadById(id);
     }
 

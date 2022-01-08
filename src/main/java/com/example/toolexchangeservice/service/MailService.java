@@ -102,4 +102,33 @@ public class MailService {
             log.error("Exception whilst sending mail", e);
         }
     }
+
+    @Async
+    public void sendAdviceAnsweredMail(String to, String fromUsername, String adviceThreadTitle, String advice) {
+        try {
+            MimeMessage mimeMessage = this.mailSender.createMimeMessage();
+            MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, true);
+
+
+            messageHelper.setFrom(this.fromEmail);
+            messageHelper.setTo(to);
+            messageHelper.setSubject("Dobili ste savjet!");
+
+            Map<String, Object> templateMap = new HashMap<>();
+            templateMap.put("adviceThreadName", adviceThreadTitle);
+            templateMap.put("advice", advice);
+            templateMap.put("fromUsername", fromUsername);
+
+
+            String content = FreeMarkerTemplateUtils.processTemplateIntoString(
+                    this.freemarkerConfigurer.getConfiguration().getTemplate("advice-thread-answered.flt"), templateMap);
+            messageHelper.setText(content, true);
+
+            log.info("Sending mail to {}", to);
+
+            this.mailSender.send(messageHelper.getMimeMessage());
+        } catch (MessagingException | IOException | TemplateException e) {
+            log.error("Exception whilst sending mail", e);
+        }
+    }
 }

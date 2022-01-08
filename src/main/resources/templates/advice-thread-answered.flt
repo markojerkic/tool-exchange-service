@@ -1,0 +1,9 @@
+<html>
+    <body>
+        <p>Korisnik <b>${fromUsername}</b> je odgovorio na vaš zahtjev za savjetom ${adviceThreadName}.</p>
+        <p>Savijet:</p>
+        <p>...</p>
+        <p>${advice}</p>
+        <p>...</p>
+    </body>
+</html>

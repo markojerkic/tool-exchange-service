@@ -21,6 +21,12 @@ public class MvcExceptionHandler {
         log.info("Image not found", e);
     }
 
+    @ExceptionHandler(AdviceNotFound.class)
+    @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Savjet nije pronađen")
+    public void adviceNotFound(HttpServletRequest req, Exception e) {
+        log.info("Advice not found", e);
+    }
+
     @ExceptionHandler(OfferNotFound.class)
     @ResponseStatus(value= HttpStatus.NOT_FOUND, reason="Ponuda nije pronađena")
     public void offerNotFound(HttpServletRequest req, Exception e) {
