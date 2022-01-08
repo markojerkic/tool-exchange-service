@@ -53,6 +53,7 @@ public class AdviceThreadService {
         previewDTO.setTitle(thread.getTitle());
         previewDTO.setDetails(thread.getDetails());
         previewDTO.setUserCreated(thread.getCreator().getUsername());
+		previewDTO.setLastModified(thread.getLastModified());
         previewDTO.setThumbnailImageUuid(this.getThumbnailImage(thread));
 
         return previewDTO;
