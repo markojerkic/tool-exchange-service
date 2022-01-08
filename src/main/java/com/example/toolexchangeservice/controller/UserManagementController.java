@@ -35,7 +35,7 @@ public class UserManagementController {
      * Api operation that returns a page of existing users saved in the database
      * @return List of all existing users in database
      */
-    @GetMapping
+    @GetMapping("/page")
     public Page<UserPreviewDTO> getUsers(Pageable pageable, @RequestParam Optional<String> username) {
         return this.userManagementService.getUserPage(pageable, username);
     }
