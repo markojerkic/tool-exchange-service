@@ -85,10 +85,7 @@ public class UserManagementService implements UserDetailsService {
         UserPreviewDTO dto = new UserPreviewDTO();
         dto.setId(user.getId());
         dto.setUsername(user.getUsername());
-
-        // TODO čitaj iz user
-        dto.setIsDisabled(false);
-
+        dto.setIsDisabled(user.getIsDisabled());
         dto.setEmail(user.getEmail());
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
