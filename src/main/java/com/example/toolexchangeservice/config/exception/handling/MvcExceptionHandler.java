@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -48,6 +49,11 @@ public class MvcExceptionHandler {
     public ResponseEntity<ErrorResponse> handleEmailAlreadyExistsException(HttpServletRequest request, Exception e) {
         log.info("Email already exists", e);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse("Email adresa se već koristi", "email"));
+    }
+    @ExceptionHandler(DisabledException.class)
+    public ResponseEntity<ErrorResponse> disabledException(HttpServletRequest request, Exception e) {
+        log.info("Disabled user trying to login");
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorResponse("Vaš račun je blokiran", "disabled"));
     }
     @ExceptionHandler(UsernameAlreadyExistsException.class)
     public ResponseEntity<ErrorResponse> handleUsernameAlreadyExistsException(HttpServletRequest request, Exception e) {

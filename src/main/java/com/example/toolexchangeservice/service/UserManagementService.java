@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -77,8 +78,10 @@ public class UserManagementService implements UserDetailsService {
                 new UsernameNotFoundException("Korisnik s email adresom " + email + " nije pronađen"));
     }
 
-    public Page<UserPreviewDTO> getUserPage(Pageable pageable, Optional<String> username) {
-        return this.userRepository.findAll(this.createQuerySpecification(username), pageable).map(this::mapToDto);
+    @Secured("ROLE_ADMIN")
+    public Page<UserPreviewDTO> getUserPage(Pageable pageable, Optional<String> username,
+                                            Optional<String> email, Optional<Boolean> isBlocked) {
+        return this.userRepository.findAll(this.createQuerySpecification(username, email, isBlocked), pageable).map(this::mapToDto);
     }
 
     private UserPreviewDTO mapToDto(UserDetail user) {
@@ -94,17 +97,22 @@ public class UserManagementService implements UserDetailsService {
         return dto;
     }
 
-    private Specification<UserDetail> createQuerySpecification(Optional<String> username) {
+    private Specification<UserDetail> createQuerySpecification(Optional<String> username, Optional<String> email,
+                                                               Optional<Boolean> isBlocked) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
             username.ifPresent(un -> predicates.add(criteriaBuilder.like(criteriaBuilder.upper(
-                    root.get("username")), "%" + un + "%")));
+                    root.get("username")), "%" + un.toUpperCase() + "%")));
+            email.ifPresent(em -> predicates.add(criteriaBuilder.like(criteriaBuilder.upper(
+                    root.get("email")), "%" + em.toUpperCase() + "%")));
+            isBlocked.ifPresent(ib -> predicates.add(criteriaBuilder.equal(root.get("isDisabled"), ib)));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };
     }
 
+    @Secured("ROLE_ADMIN")
     public void blockUserById(Long id) throws IdNotFoundException {
         UserDetail data = this.userRepository.findById(id).orElseThrow(() ->
                 new UsernameNotFoundException("Korisnik s korisničkim id " + id + " nije pronađen"));

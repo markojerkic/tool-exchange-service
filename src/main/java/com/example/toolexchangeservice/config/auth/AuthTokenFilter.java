@@ -43,7 +43,7 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             }
         } catch (Exception e) {
             // TODO implment exception handling for specific exceptions
-            log.error("Auth filter failed", e);
+            log.info("Auth filter failed");
         }
 
         filterChain.doFilter(request, response);

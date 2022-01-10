@@ -36,8 +36,10 @@ public class UserManagementController {
      * @return List of all existing users in database
      */
     @GetMapping("/page")
-    public Page<UserPreviewDTO> getUsers(Pageable pageable, @RequestParam Optional<String> username) {
-        return this.userManagementService.getUserPage(pageable, username);
+    public Page<UserPreviewDTO> getUsers(Pageable pageable, @RequestParam Optional<String> username,
+                                         @RequestParam Optional<String> email,
+                                         @RequestParam Optional<Boolean> isBlocked) {
+        return this.userManagementService.getUserPage(pageable, username, email, isBlocked);
     }
 
     @GetMapping()
