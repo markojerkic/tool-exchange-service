@@ -6,6 +6,7 @@ import com.example.toolexchangeservice.model.entity.UserRating;
 import com.example.toolexchangeservice.repository.RatingRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -22,6 +23,12 @@ public class RatingService {
 
     public void addNewRating(UserRatingDto userRating) {
         UserDetail aboutUser = this.userManagementService.loadUserByUsername(userRating.getAboutUser());
+        UserDetail fromUser = this.authService.getLoggedInUser();
+
+        if (aboutUser.equals(fromUser)) {
+            throw new AccessDeniedException("Ne možete ocijeniti sami sebe");
+        }
+
         Float averageRating;
         if (Objects.isNull(aboutUser.getAverageRating())) {
             averageRating = Float.valueOf(userRating.getMark());
@@ -31,8 +38,6 @@ public class RatingService {
         this.userManagementService.updateAverageRating(aboutUser, averageRating);
 
         UserRating rating = new UserRating();
-
-        UserDetail fromUser = this.authService.getLoggedInUser();
         rating.setFromUser(fromUser);
         rating.setAboutUser(aboutUser);
         rating.setLastModified(new Date());
@@ -48,6 +53,7 @@ public class RatingService {
 
     private UserRatingDto mapToRatingDto(UserRating userRating) {
         UserRatingDto rating = new UserRatingDto();
+        rating.setId(userRating.getId());
         rating.setAboutUser(userRating.getAboutUser().getUsername());
         rating.setFromUser(userRating.getFromUser().getUsername());
         rating.setLastModified(userRating.getLastModified());
