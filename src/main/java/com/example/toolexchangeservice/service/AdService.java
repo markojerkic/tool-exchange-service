@@ -58,6 +58,10 @@ public class AdService {
         return previewDTO;
     }
 
+    public void deleteUserById(Long id){
+        adRepository.deleteById(id);
+    }
+
     private UUID getThumbnailImage(AdDetail adDetail) {
         return this.imageService.getImagesByAdvertId(adDetail.getId()).stream().map(Image::getUuid)
                 .findFirst().orElse(null);

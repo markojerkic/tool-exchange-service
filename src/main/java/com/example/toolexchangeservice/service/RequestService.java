@@ -31,6 +31,10 @@ public class RequestService {
         return this.requestRepository.findAll(pageable).map(this::mapPreviewDto);
     }
 
+    public void deleteUserById(Long id){
+        requestRepository.deleteById(id);
+    }
+
     private RequestPreviewDTO mapPreviewDto(Request req) {
         RequestPreviewDTO previewDto = new RequestPreviewDTO();
         previewDto.setId(req.getId());

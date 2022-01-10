@@ -28,6 +28,11 @@ public class RequestController {
         return this.requestService.getPagedRequestPreviews(pageable);
     }
 
+    @DeleteMapping("/delete/id={id}")
+    public void deleteUser(@PathVariable Long id){
+        this.requestService.deleteUserById(id);
+    }
+
     @GetMapping("{id}")
     public Request getRequestById(@PathVariable Long id) {
         return this.requestService.getRequestById(id);

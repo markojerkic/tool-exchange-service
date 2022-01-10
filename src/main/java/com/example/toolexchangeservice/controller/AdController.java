@@ -30,6 +30,11 @@ public class AdController {
         return this.adService.getPagedAdverts(pageable);
     }
 
+    @DeleteMapping("/delete/id={id}")
+    public void deleteUser(@PathVariable Long id){
+        this.adService.deleteUserById(id);
+    }
+
     @GetMapping("{id}")
     public AdDetail getAdById(@PathVariable Long id) {
         return this.adService.getAdById(id);
