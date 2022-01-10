@@ -13,8 +13,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -38,7 +38,7 @@ public class AuthService {
         String refreshToken = this.jwtUtils.generateRefreshToken(auth);
 
         UserDetails user = (UserDetails) auth.getPrincipal();
-        List<String> roles = Arrays.asList("ROLE_USER");
+        List<String> roles = user.getAuthorities().stream().map(Object::toString).collect(Collectors.toList());
         return new JwtResponse(accessToken, refreshToken, user.getUsername(), roles);
     }
 
@@ -50,7 +50,7 @@ public class AuthService {
         UserDetails user = this.userManagementService.loadUserByUsername(username);
         UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null,
                 user.getAuthorities());
-        List<String> roles = Arrays.asList("ROLE_USER");
+        List<String> roles = user.getAuthorities().stream().map(Object::toString).collect(Collectors.toList());
 
         return new JwtResponse(this.jwtUtils.generateAccessToken(auth),
                 this.jwtUtils.generateRefreshToken(auth), username, roles);
