@@ -14,6 +14,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -93,6 +94,7 @@ public class UserManagementService implements UserDetailsService {
         dto.setFirstName(user.getFirstName());
         dto.setLastName(user.getLastName());
         dto.setFormattedAddress(user.getFormattedAddress());
+        dto.setAverageRating(user.getAverageRating());
 
         return dto;
     }
@@ -118,5 +120,15 @@ public class UserManagementService implements UserDetailsService {
                 new UsernameNotFoundException("Korisnik s korisničkim id " + id + " nije pronađen"));
         data.setIsDisabled(!data.getIsDisabled());
         this.userRepository.save(data);
+    }
+
+    @Async
+    public void updateAverageRating(UserDetail aboutUser, Float averageRating) {
+        aboutUser.setAverageRating(averageRating);
+        this.userRepository.save(aboutUser);
+    }
+
+    public UserPreviewDTO getUserByUsername(String username) {
+        return this.mapToDto(this.loadUserByUsername(username));
     }
 }

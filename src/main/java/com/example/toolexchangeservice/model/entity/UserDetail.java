@@ -47,6 +47,9 @@ public class UserDetail implements UserDetails {
     private String password;
 
     @Column
+    private Float averageRating;
+
+    @Column
     @NotNull
     private Boolean isDisabled = false;
 

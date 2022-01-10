@@ -11,4 +11,5 @@ public class UserPreviewDTO {
     private String lastName;
     private String formattedAddress;
     private String email;
+    private Float averageRating;
 }

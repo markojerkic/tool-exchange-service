@@ -19,7 +19,6 @@ import java.util.Optional;
 public class UserManagementController {
 
     private final UserManagementService userManagementService;
-    private final AuthService authService;
 
     /**
      * Api operation for saving a new user or updating existing one
@@ -40,6 +39,11 @@ public class UserManagementController {
                                          @RequestParam Optional<String> email,
                                          @RequestParam Optional<Boolean> isBlocked) {
         return this.userManagementService.getUserPage(pageable, username, email, isBlocked);
+    }
+
+    @GetMapping("by-username/{username}")
+    public UserPreviewDTO getUserByUsername(@PathVariable String username) {
+        return this.userManagementService.getUserByUsername(username);
     }
 
     @GetMapping()
