@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,7 +22,12 @@ public class RatingService {
 
     public void addNewRating(UserRatingDto userRating) {
         UserDetail aboutUser = this.userManagementService.loadUserByUsername(userRating.getAboutUser());
-        Float averageRating = (aboutUser.getAverageRating() + userRating.getMark()) / 2;
+        Float averageRating;
+        if (Objects.isNull(aboutUser.getAverageRating())) {
+            averageRating = Float.valueOf(userRating.getMark());
+        } else {
+         averageRating = (aboutUser.getAverageRating() + userRating.getMark()) / 2;
+        }
         this.userManagementService.updateAverageRating(aboutUser, averageRating);
 
         UserRating rating = new UserRating();
