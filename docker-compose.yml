@@ -17,6 +17,7 @@ services:
       - tool-db
     environment:
       - DB_HOST=tool-db
+      - SPRING_PROFILES_ACTIVE=prod
       - DB_PORT=5432
       - CORS_ORIGINS=http://34.89.240.97:443
     ports:
