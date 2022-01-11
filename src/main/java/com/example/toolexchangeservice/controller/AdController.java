@@ -2,6 +2,7 @@ package com.example.toolexchangeservice.controller;
 
 import com.example.toolexchangeservice.model.dto.AdvertPreviewDTO;
 import com.example.toolexchangeservice.model.entity.AdDetail;
+import com.example.toolexchangeservice.model.entity.ToolState;
 import com.example.toolexchangeservice.service.AdService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.SortDefault;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 
 @RestController
@@ -26,8 +29,17 @@ public class AdController {
 
     @GetMapping
     public Page<AdvertPreviewDTO> getAllAds(@SortDefault(value = "lastModified",
-            direction = Sort.Direction.DESC) Pageable pageable){
-        return this.adService.getPagedAdverts(pageable);
+            direction = Sort.Direction.DESC) Pageable pageable,
+                                            @RequestParam Optional<String> title,
+                                            @RequestParam Optional<Double> maxRange,
+                                            @RequestParam Optional<Integer> minPower,
+                                            @RequestParam Optional<Integer> maxPower,
+                                            @RequestParam Optional<Boolean> electric,
+                                            @RequestParam Optional<Boolean> nonelectric,
+                                            @RequestParam Optional<Boolean> hasBattery,
+                                            @RequestParam Optional<ToolState> condition){
+        return this.adService.getPagedAdverts(pageable, title, maxRange, minPower, maxPower, electric,
+                nonelectric, hasBattery, condition);
     }
 
     @DeleteMapping("/delete/id={id}")
