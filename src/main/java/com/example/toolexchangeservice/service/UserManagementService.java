@@ -6,6 +6,7 @@ import com.example.toolexchangeservice.config.exception.IdNotFoundException;
 import com.example.toolexchangeservice.config.exception.UsernameAlreadyExistsException;
 import com.example.toolexchangeservice.model.auth.Role;
 import com.example.toolexchangeservice.model.dto.UserPreviewDTO;
+import com.example.toolexchangeservice.model.dto.UserUpdateDTO;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.model.location.Result;
 import com.example.toolexchangeservice.repository.UserRepository;
@@ -120,6 +121,14 @@ public class UserManagementService implements UserDetailsService {
                 new UsernameNotFoundException("Korisnik s korisničkim id " + id + " nije pronađen"));
         data.setIsDisabled(!data.getIsDisabled());
         this.userRepository.save(data);
+    }
+
+    public void updateUserPrivateInformationById(UserUpdateDTO data) throws IdNotFoundException {
+        UserDetail update = this.userRepository.findById(data.getId()).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s korisničkim id " + data.getId() + " nije pronađen"));
+        update.setFirstName(data.getFirstName());
+        update.setLastName(data.getLastName());
+        this.userRepository.save(update);
     }
 
     @Async

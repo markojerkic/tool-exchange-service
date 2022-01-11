@@ -1,6 +1,7 @@
 package com.example.toolexchangeservice.controller;
 
 import com.example.toolexchangeservice.model.dto.UserPreviewDTO;
+import com.example.toolexchangeservice.model.dto.UserUpdateDTO;
 import com.example.toolexchangeservice.model.entity.UserDetail;
 import com.example.toolexchangeservice.service.AuthService;
 import com.example.toolexchangeservice.service.UserManagementService;
@@ -63,6 +64,11 @@ public class UserManagementController {
     @PutMapping("/block/id={id}")
     public void blockUser(@PathVariable Long id){
         this.userManagementService.blockUserById(id);
+    }
+
+    @PutMapping("/update")
+    public void updateUserPrivateInformationById(@RequestBody UserUpdateDTO data){
+        this.userManagementService.updateUserPrivateInformationById(data);
     }
 
 }
