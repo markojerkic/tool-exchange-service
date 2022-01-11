@@ -44,6 +44,11 @@ public class ImageController {
         return this.imageService.getImagesByAdvertId(adId);
     }
 
+    @GetMapping("by-thread/{threadId}")
+    public List<Image> getThreadImages(@PathVariable Long threadId) {
+        return this.imageService.getImagesByThreadId(threadId);
+    }
+
     @DeleteMapping("{uuid}")
     public void deleteImage(@PathVariable UUID uuid) {
         this.imageService.deleteImageByUUID(uuid);

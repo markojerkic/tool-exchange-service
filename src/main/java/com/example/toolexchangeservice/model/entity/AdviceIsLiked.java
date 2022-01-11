@@ -1,50 +1,39 @@
 package com.example.toolexchangeservice.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class AdviceThread {
+public class AdviceIsLiked {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column
+    @ManyToOne
+    @JoinColumn(name = "advice_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
-    private String title;
-    @Column
+    private Advice advice;
+    @ManyToOne
+    @JoinColumn(name = "by_user_id")
     @NotNull
-    private String details;
-    @Column
-    @NotNull
-    private Date lastModified;
-    @Column
-    @NotNull
-    private Integer numAdvices = 0;
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "creator_id")
-    @NotNull
-    private UserDetail creator;
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @Transient
-    private List<Image> images;
+    private UserDetail byUser;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AdviceThread that = (AdviceThread) o;
+        AdviceIsLiked that = (AdviceIsLiked) o;
         return id != null && Objects.equals(id, that.id);
     }
 

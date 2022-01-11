@@ -55,6 +55,7 @@ public class AdviceThreadService {
         previewDTO.setUserCreated(thread.getCreator().getUsername());
 		previewDTO.setLastModified(thread.getLastModified());
         previewDTO.setThumbnailImageUuid(this.getThumbnailImage(thread));
+        previewDTO.setNumComments(thread.getNumAdvices());
 
         return previewDTO;
     }
@@ -62,5 +63,10 @@ public class AdviceThreadService {
     private UUID getThumbnailImage(AdviceThread thread) {
         return this.imageService.getImagesByThreadId(thread.getId()).stream().map(Image::getUuid)
                 .findFirst().orElse(null);
+    }
+
+    public void updateNumComments(Long id) {
+        AdviceThread thread = this.getThreadById(id);
+        this.adviceThreadRepository.updateNumComments(thread.getNumAdvices() + 1, id);
     }
 }

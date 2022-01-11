@@ -13,4 +13,5 @@ public class AdviceThreadDTO {
     private String details;
 	private Date lastModified;
     private UUID thumbnailImageUuid;
+    private Integer numComments;
 }

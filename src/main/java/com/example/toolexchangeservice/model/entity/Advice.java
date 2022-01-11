@@ -5,6 +5,8 @@ import com.sun.istack.NotNull;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -29,9 +31,12 @@ public class Advice {
     private UserDetail creator;
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "thread_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @NotNull
     private AdviceThread parentThread;
     @Column
     private Boolean isLiked = false;
+    @Column
+    private Integer numLiked = 0;
 
 }

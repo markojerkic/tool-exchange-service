@@ -3,6 +3,7 @@ package com.example.toolexchangeservice.service.advice;
 import com.example.toolexchangeservice.config.exception.AdviceNotFound;
 import com.example.toolexchangeservice.model.dto.AdviceDTO;
 import com.example.toolexchangeservice.model.dto.AdviceLike;
+import com.example.toolexchangeservice.model.dto.AdviceToggle;
 import com.example.toolexchangeservice.model.entity.Advice;
 import com.example.toolexchangeservice.repository.AdviceRepository;
 import com.example.toolexchangeservice.service.AuthService;
@@ -20,11 +21,15 @@ public class AdviceService {
     private final AdviceRepository adviceRepository;
     private final MailService mailService;
     private final AuthService authService;
+    private final AdviceLikeService adviceLikeService;
+    private final AdviceThreadService threadService;
 
     public Advice addAdviceToThread(Advice advice) {
         advice.setCreator(this.authService.getLoggedInUser());
         advice.setLastModified(new Date());
         Advice savedAdvice = this.adviceRepository.save(advice);
+
+        this.threadService.updateNumComments(savedAdvice.getParentThread().getId());
 
         this.mailService.sendAdviceAnsweredMail(advice.getCreator().getEmail(),
                 this.authService.getLoggedInUser().getUsername(), savedAdvice.getParentThread().getTitle(),
@@ -52,12 +57,18 @@ public class AdviceService {
         dto.setMessage(advice.getMessage());
         dto.setLastModified(advice.getLastModified());
         dto.setUserCreated(advice.getCreator().getUsername());
-        dto.setIsLiked(advice.getIsLiked());
+        dto.setNumLikes(this.adviceLikeService.getNumLiked(advice));
+        dto.setIsLikedByMe(this.adviceLikeService.getIsLikedByMe(advice));
+
         return dto;
     }
 
     public Advice getAdviceById(Long id) {
         return this.adviceRepository.findById(id).orElseThrow(() ->
                 new AdviceNotFound("Advice " + id + " not found"));
+    }
+
+    public Integer toggleLike(AdviceToggle adviceToggle) {
+        return this.adviceLikeService.toggleAdvice(adviceToggle);
     }
 }
