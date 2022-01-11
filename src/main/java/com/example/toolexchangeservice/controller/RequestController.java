@@ -29,8 +29,8 @@ public class RequestController {
     }
 
     @DeleteMapping("/delete/id={id}")
-    public void deleteUser(@PathVariable Long id){
-        this.requestService.deleteUserById(id);
+    public void deleteRequest(@PathVariable Long id){
+        this.requestService.deleteRequestById(id);
     }
 
     @GetMapping("{id}")

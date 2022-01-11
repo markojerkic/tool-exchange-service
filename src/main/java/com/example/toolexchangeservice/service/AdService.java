@@ -9,6 +9,7 @@ import com.example.toolexchangeservice.service.image.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -58,7 +59,8 @@ public class AdService {
         return previewDTO;
     }
 
-    public void deleteUserById(Long id){
+    @Secured("ROLE_ADMIN")
+    public void deleteAdById(Long id){
         adRepository.deleteById(id);
     }
 

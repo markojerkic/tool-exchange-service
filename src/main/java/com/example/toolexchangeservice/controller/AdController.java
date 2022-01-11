@@ -31,8 +31,8 @@ public class AdController {
     }
 
     @DeleteMapping("/delete/id={id}")
-    public void deleteUser(@PathVariable Long id){
-        this.adService.deleteUserById(id);
+    public void deleteAd(@PathVariable Long id){
+        this.adService.deleteAdById(id);
     }
 
     @GetMapping("{id}")

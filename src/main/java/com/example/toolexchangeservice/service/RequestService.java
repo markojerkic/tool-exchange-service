@@ -7,6 +7,7 @@ import com.example.toolexchangeservice.repository.RequestRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -31,7 +32,8 @@ public class RequestService {
         return this.requestRepository.findAll(pageable).map(this::mapPreviewDto);
     }
 
-    public void deleteUserById(Long id){
+    @Secured("ROLE_ADMIN")
+    public void deleteRequestById(Long id){
         requestRepository.deleteById(id);
     }
 
