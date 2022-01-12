@@ -99,13 +99,12 @@ public class AdService {
             maxRange.ifPresent(range -> {
                 UserDetail user = this.authService.getLoggedInUser();
                 predicates.add(
-                        criteriaBuilder.greaterThanOrEqualTo(
+                        criteriaBuilder.lessThanOrEqualTo(
                                 criteriaBuilder.function("calculate_distance", Double.class,
                                         root.get("creator").get("lat"),
                                         root.get("creator").get("lng"),
                                         criteriaBuilder.toDouble(criteriaBuilder.literal(user.getLat())),
-                                        criteriaBuilder.toDouble(criteriaBuilder.literal(user.getLng())),
-                                        criteriaBuilder.literal("K")),
+                                        criteriaBuilder.toDouble(criteriaBuilder.literal(user.getLng()))),
                                 range
                         )
                 );
