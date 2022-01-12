@@ -44,15 +44,17 @@ public class ExchangeOfferService {
     }
 
     public Page<ExchangeOfferPreviewDto> getOffers(Pageable pageable, Optional<String> advertTitle, Optional<String> from,
-                                                   Optional<Long> suggestedTimeframe, Optional<ExchangeOfferStatus> status) {
+                                                   Optional<Long> suggestedTimeframe, Optional<ExchangeOfferStatus> status,
+                                                   Optional<Boolean> sentByMe) {
         return this.exchangeOfferRepository.findAll(this.createQuerySpecification(advertTitle, from,
-                suggestedTimeframe, status, this.authService.getLoggedInUser().getId()),
+                suggestedTimeframe, status, this.authService.getLoggedInUser().getId(), sentByMe),
                 pageable).map(this::mapToPreview);
     }
 
     private Specification<ExchangeOffer> createQuerySpecification(Optional<String> advertTitle, Optional<String> from,
                                                                   Optional<Long> suggestedTimeframe,
-                                                                  Optional<ExchangeOfferStatus> status, Long userId) {
+                                                                  Optional<ExchangeOfferStatus> status, Long userId,
+                                                                  Optional<Boolean> sentByMe) {
         return (root, query, criteriaBuilder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
@@ -67,9 +69,10 @@ public class ExchangeOfferService {
             status.ifPresent(offerStatus -> predicates.add(criteriaBuilder.equal(root.get("offerStatus"),
                     offerStatus)));
 
-            predicates.add(criteriaBuilder.equal(root.get("advert").get("creator")
-                            .get("id"),
-                    userId));
+            sentByMe.ifPresentOrElse(byMe -> predicates.add(criteriaBuilder.equal(root.get("offerFrom").get("id"),
+                    userId)), () -> predicates.add(criteriaBuilder.equal(root.get("advert").get("creator")
+                                    .get("id"),
+                            userId)));
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[predicates.size()]));
         };

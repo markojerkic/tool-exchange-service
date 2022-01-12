@@ -48,7 +48,8 @@ public class ExchangeOfferController {
                                                    @RequestParam Optional<String> advertTitle,
                                                    @RequestParam Optional<String> from,
                                                    @RequestParam Optional<Long> suggestedTimeframe,
-                                                   @RequestParam Optional<ExchangeOfferStatus> status) {
-        return this.exchangeOfferService.getOffers(pageable, advertTitle, from, suggestedTimeframe, status);
+                                                   @RequestParam Optional<ExchangeOfferStatus> status,
+                                                   @RequestParam Optional<Boolean> sentByMe) {
+        return this.exchangeOfferService.getOffers(pageable, advertTitle, from, suggestedTimeframe, status, sentByMe);
     }
 }
