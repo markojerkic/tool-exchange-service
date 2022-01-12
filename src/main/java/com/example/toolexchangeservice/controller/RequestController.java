@@ -28,7 +28,7 @@ public class RequestController {
         return this.requestService.getPagedRequestPreviews(pageable);
     }
 
-    @DeleteMapping("/delete/id={id}")
+    @DeleteMapping("{id}")
     public void deleteRequest(@PathVariable Long id){
         this.requestService.deleteRequestById(id);
     }
