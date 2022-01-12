@@ -42,7 +42,7 @@ public class AdController {
                 nonelectric, hasBattery, condition);
     }
 
-    @DeleteMapping("/delete/id={id}")
+    @DeleteMapping("{id}")
     public void deleteAd(@PathVariable Long id){
         this.adService.deleteAdById(id);
     }
