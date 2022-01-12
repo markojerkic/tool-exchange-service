@@ -103,8 +103,8 @@ public class AdService {
                                 criteriaBuilder.function("calculate_distance", Double.class,
                                         root.get("creator").get("lat"),
                                         root.get("creator").get("lng"),
-                                        criteriaBuilder.literal(user.getLat()),
-                                        criteriaBuilder.literal(user.getLng()),
+                                        criteriaBuilder.toDouble(criteriaBuilder.literal(user.getLat())),
+                                        criteriaBuilder.toDouble(criteriaBuilder.literal(user.getLng())),
                                         criteriaBuilder.literal("K")),
                                 range
                         )

@@ -1,5 +1,5 @@
-CREATE OR REPLACE FUNCTION calculate_distance(lat1 float, lon1 float, lat2 float, lon2 float, units varchar)
-    RETURNS float AS $dist$
+CREATE OR REPLACE FUNCTION calculate_distance(lat1 double precision, lon1 double precision, lat2 double precision, lon2 double precision, units varchar)
+    RETURNS double precision AS $dist$
 DECLARE
     dist float = 0;
     radlat1 float;
