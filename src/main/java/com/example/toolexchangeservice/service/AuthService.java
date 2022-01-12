@@ -4,8 +4,11 @@ import com.example.toolexchangeservice.config.auth.JwtUtils;
 import com.example.toolexchangeservice.model.auth.dto.JwtResponse;
 import com.example.toolexchangeservice.model.auth.dto.LoginRequest;
 import com.example.toolexchangeservice.model.entity.UserDetail;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,7 +21,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthService {
     private final UserManagementService userManagementService;
     private final AuthenticationManager authManager;
@@ -56,6 +59,7 @@ public class AuthService {
                 this.jwtUtils.generateRefreshToken(auth), username, roles);
     }
 
+    @PreAuthorize("isAuthenticated()")
     public UserDetail getLoggedInUser() {
         return (UserDetail) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
     }
