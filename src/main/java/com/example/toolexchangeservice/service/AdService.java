@@ -120,6 +120,7 @@ public class AdService {
         previewDTO.setDetails(adDetail.getDetails());
         previewDTO.setUserCreated(adDetail.getCreator().getUsername());
         previewDTO.setThumbnailImageUuid(this.getThumbnailImage(adDetail));
+        previewDTO.setIsBest(adDetail.getCreator().getIsBestHandyman());
 
         return previewDTO;
     }

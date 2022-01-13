@@ -10,6 +10,7 @@ public class AdviceThreadDTO {
     private Long id;
     private String title;
     private String userCreated;
+    private Boolean isBest;
     private String details;
 	private Date lastModified;
     private UUID thumbnailImageUuid;

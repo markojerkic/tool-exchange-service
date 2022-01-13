@@ -55,6 +55,9 @@ public class UserDetail implements UserDetails {
     @Column
     @NotNull
     private Boolean isDisabled = false;
+    @Column
+    @NotNull
+    private Boolean isBestHandyman = false;
 
     // Lokacija
     @Transient

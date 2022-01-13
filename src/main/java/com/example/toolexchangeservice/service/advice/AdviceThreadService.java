@@ -56,6 +56,7 @@ public class AdviceThreadService {
 		previewDTO.setLastModified(thread.getLastModified());
         previewDTO.setThumbnailImageUuid(this.getThumbnailImage(thread));
         previewDTO.setNumComments(thread.getNumAdvices());
+        previewDTO.setIsBest(thread.getCreator().getIsBestHandyman());
 
         return previewDTO;
     }

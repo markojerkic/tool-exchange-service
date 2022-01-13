@@ -43,6 +43,7 @@ public class RequestService {
         previewDto.setTitle(req.getTitle());
         previewDto.setDetails(req.getDetails());
         previewDto.setUserCreated(req.getCreator().getUsername());
+        previewDto.setIsBest(req.getCreator().getIsBestHandyman());
 
         return previewDto;
     }

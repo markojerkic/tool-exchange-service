@@ -10,6 +10,7 @@ public class AdviceDTO {
     private String message;
     private Date lastModified;
     private String userCreated;
+    private Boolean isBest;
     private Integer numLikes;
     private Boolean isLikedByMe;
 }

@@ -59,6 +59,7 @@ public class AdviceService {
         dto.setUserCreated(advice.getCreator().getUsername());
         dto.setNumLikes(this.adviceLikeService.getNumLiked(advice));
         dto.setIsLikedByMe(this.adviceLikeService.getIsLikedByMe(advice));
+        dto.setIsBest(advice.getCreator().getIsBestHandyman());
 
         return dto;
     }

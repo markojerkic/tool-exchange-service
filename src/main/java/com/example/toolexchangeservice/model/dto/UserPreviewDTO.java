@@ -6,6 +6,7 @@ import lombok.Data;
 public class UserPreviewDTO {
     private Long id;
     private String username;
+    private Boolean isBest;
     private String phoneNumber;
     private Boolean isDisabled;
     private String firstName;

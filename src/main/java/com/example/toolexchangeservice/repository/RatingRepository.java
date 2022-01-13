@@ -6,9 +6,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface RatingRepository extends JpaRepository<UserRating, Long>, PagingAndSortingRepository<UserRating, Long> {
     List<UserRating> findAllByAboutUser_UsernameOrderByLastModifiedDesc(String id, Pageable pageable);
+
+    List<UserRating> findAllByLastModifiedBetween(Date d1, Date d2);
 }

@@ -5,6 +5,7 @@ import com.example.toolexchangeservice.model.dto.UserRatingDto;
 import com.example.toolexchangeservice.service.RatingService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +23,15 @@ public class RatingController {
     }
 
     @PostMapping
-    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @ResponseStatus(value = HttpStatus.CREATED)
     public void addUserRating(@RequestBody UserRatingDto rating) {
         this.ratingService.addNewRating(rating);
+    }
+
+    @GetMapping("new-best")
+    @ResponseStatus(value = HttpStatus.ACCEPTED)
+    @Secured("ROLE_ADMIN")
+    public void calculateNewBestHandyman() {
+        this.ratingService.findBestHandymanUntilToday();
     }
 }

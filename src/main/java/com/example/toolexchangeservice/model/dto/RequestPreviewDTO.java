@@ -8,4 +8,5 @@ public class RequestPreviewDTO {
     private String title;
     private String details;
     private String userCreated;
+    private Boolean isBest;
 }

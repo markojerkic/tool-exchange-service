@@ -141,4 +141,17 @@ public class UserManagementService implements UserDetailsService {
     public UserPreviewDTO getUserByUsername(String username) {
         return this.mapToDto(this.loadUserByUsername(username));
     }
+
+    public void setNewBestHandyMan(UserDetail user) {
+        UserDetail handyman = this.userRepository.findByUsername(user.getUsername()).orElseThrow(() ->
+                new UsernameNotFoundException("Korisnik s korisničkim id " + user.getUsername() + " nije pronađen"));
+
+        this.userRepository.findAllByIsBestHandyman(true).forEach((lastBest) -> {
+            lastBest.setIsBestHandyman(false);
+            this.userRepository.save(lastBest);
+        });
+
+        handyman.setIsBestHandyman(true);
+        this.userRepository.save(handyman);
+    }
 }
