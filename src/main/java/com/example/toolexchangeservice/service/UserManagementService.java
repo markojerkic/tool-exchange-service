@@ -128,6 +128,7 @@ public class UserManagementService implements UserDetailsService {
                 new UsernameNotFoundException("Korisnik s korisničkim id " + data.getId() + " nije pronađen"));
         update.setFirstName(data.getFirstName());
         update.setLastName(data.getLastName());
+        update.setPhoneNumber(data.getPhoneNumber());
         this.userRepository.save(update);
     }
 
