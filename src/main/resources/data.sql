@@ -1,4 +1,4 @@
-insert into user_detail (email, first_name, last_name, password, username, formatted_address, lat, lng, is_disabled)
+insert into user_detail (email, first_name, last_name, password, username, formatted_address, lat, lng, is_disabled, phone_number)
 select 'admin@admin.hr',
        'Admin',
        'Adminović',
@@ -7,7 +7,8 @@ select 'admin@admin.hr',
        'Zagreb, Hrvatska',
        45.8150108,
        15.9819189,
-       false
+       false,
+       '000000069'
 where not exists(select * from user_detail where username = 'admin');
 
 

@@ -35,6 +35,9 @@ public class UserDetail implements UserDetails {
     @Column
     @NotNull
     private String lastName;
+    @Column
+    @NotNull
+    private String phoneNumber;
     @Column(unique = true)
     @NotNull
     private String email;
