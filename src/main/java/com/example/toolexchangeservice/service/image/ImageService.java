@@ -7,7 +7,6 @@ import com.example.toolexchangeservice.repository.ImageRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
@@ -19,7 +18,7 @@ public class ImageService {
     private final ImageRepository imageRepository;
     private final ImageFileService imageFileService;
 
-    public ImageService(ImageRepository imageRepository, RestTemplate restTemplate,
+    public ImageService(ImageRepository imageRepository,
                         ImageFileService imageFileService) {
         this.imageRepository = imageRepository;
         this.imageFileService = imageFileService;
@@ -64,7 +63,6 @@ public class ImageService {
     }
 
     public MediaType getContentType(ImageFileExtension fileExtension) {
-        MediaType mediaType;
         switch (fileExtension) {
             case JPEG:
             case JPG:

@@ -24,6 +24,8 @@ services:
       - "8080:8080"
     networks:
       - tool-exchange-network
+    volumes:
+      - service_volume:/home/images
   tool-db:
       image: postgres
       container_name: tool-db
@@ -42,7 +44,7 @@ services:
       restart: always
 volumes:
   dbdata:
-  image_service_volume:
+  service_volume:
 networks:
   tool-exchange-network:
     

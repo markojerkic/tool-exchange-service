@@ -15,7 +15,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Predicate;
 import java.util.*;
 

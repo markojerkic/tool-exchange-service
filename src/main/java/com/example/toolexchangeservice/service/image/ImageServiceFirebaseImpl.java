@@ -2,6 +2,7 @@ package com.example.toolexchangeservice.service.image;
 
 import com.example.toolexchangeservice.config.exception.ImageNotFoundException;
 import com.example.toolexchangeservice.model.entity.Image;
+import com.example.toolexchangeservice.repository.ImageRepository;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Objects;
 
 @Profile("prod")
@@ -22,13 +24,16 @@ public class ImageServiceFirebaseImpl implements ImageFileService {
     private final String projectId;
     private final String bucketName;
     private StorageOptions storageOptions;
+    private final ImageRepository imageRepository;
 
     public ImageServiceFirebaseImpl(@Value("${project.id}") String projectId,
                                     @Value("${secret.location}") String secretLocation,
-                                    @Value("${bucket.name}") String bucketName) {
+                                    @Value("${bucket.name}") String bucketName,
+                                    ImageRepository imageRepository) {
         this.secretLocation = secretLocation;
         this.projectId = projectId;
         this.bucketName = bucketName;
+        this.imageRepository = imageRepository;
     }
 
     @PostConstruct
@@ -47,7 +52,12 @@ public class ImageServiceFirebaseImpl implements ImageFileService {
         Storage storage = storageOptions.getService();
         BlobId blobId = BlobId.of(this.bucketName, ImageUtil.getImageFileName(image));
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).build();
-        storage.create(blobInfo, image.getBytes());
+        try {
+            storage.create(blobInfo, image.getFile().getBytes());
+        } catch(IOException e) {
+            log.error("File could not be saved, deleting", e);
+            this.imageRepository.deleteById(image.getUuid());
+        }
     }
 
     @Override

@@ -3,7 +3,6 @@ package com.example.toolexchangeservice.controller;
 import com.example.toolexchangeservice.model.dto.UserPreviewDTO;
 import com.example.toolexchangeservice.model.dto.UserUpdateDTO;
 import com.example.toolexchangeservice.model.entity.UserDetail;
-import com.example.toolexchangeservice.service.AuthService;
 import com.example.toolexchangeservice.service.UserManagementService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;

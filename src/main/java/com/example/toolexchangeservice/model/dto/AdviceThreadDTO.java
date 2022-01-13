@@ -2,8 +2,8 @@ package com.example.toolexchangeservice.model.dto;
 
 import lombok.Data;
 
-import java.util.UUID;
 import java.util.Date;
+import java.util.UUID;
 
 @Data
 public class AdviceThreadDTO {
